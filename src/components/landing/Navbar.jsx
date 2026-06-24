@@ -73,13 +73,13 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-20">
             <Link href="/" className="flex items-center gap-2.5 shrink-0">
-              <img src="/logo.png" alt="Logo" className="h-8 sm:h-10 w-auto" />
+              
               <span
                 className={`text-lg sm:text-xl font-heading font-bold hidden sm:block transition-colors ${
                   scrolled ? "text-gray-900" : "text-white"
                 }`}
               >
-                TravelCourses
+                GoTravel
               </span>
             </Link>
 
@@ -123,7 +123,7 @@ export default function Navbar() {
                     </div>
                   ) : (
                     <Link
-                      href="/login"
+                      href="/sign-in"
                       className="hidden lg:inline-flex items-center px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-black font-semibold rounded-lg text-sm transition-colors"
                     >
                       Sign In
