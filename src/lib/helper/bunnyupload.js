@@ -6,17 +6,17 @@ export async function uploadBunnyVideo(videoId, videoFile) {
 
     const arrayBuffer = await videoFile.arrayBuffer();
 
-    const response = await fetch(
-        `https://video.bunnycdn.com/library/${BUNNY_LIBRARY_ID}/videos/${videoId}`,
-        {
-            method: "PUT",
-            headers: {
-                AccessKey: BUNNY_API_KEY,
-                "Content-Type": "application/octet-stream",
-            },
-            body: Buffer.from(arrayBuffer),
-        }
+    const response = await fetch( `https://video.bunnycdn.com/library/${process.env.BUNNY_LIBRARY_ID}/videos/${videoId}`,
+      {
+        method: "PUT",
+        headers: {
+          AccessKey: process.env.BUNNY_API_KEY,
+          "Content-Type": "application/octet-stream",
+        },
+        body: Buffer.from(arrayBuffer),
+      }
     );
+        
 
     if (!response.ok) {
         const errorText = await response.text();

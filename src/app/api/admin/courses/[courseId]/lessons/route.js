@@ -1,10 +1,13 @@
-import createBunnyVideo from "@/lib/helper/bunnycreate";
-import uploadBunnyVideo from "@/lib/helper/bunnyupload";
+//import createBunnyVideo from "@/lib/helper/bunnycreate";
+import {uploadBunnyVideo} from "@/lib/helper/bunnyupload";
+import { createBunnyVideo } from "@/lib/helper/bunnycreate";
 import clientPromise from "@/lib/mongodb";
+
 export async function POST(request, { params }) {
     
+    
 
-    const { courseId } = params;
+    const { courseId } = await params;
     const formData = await request.formData();
     if (!formData.has('video') || !formData.has('videoId')) {
         return new Response('Missing video or videoId', { status: 400 });
@@ -17,7 +20,13 @@ export async function POST(request, { params }) {
             const videoId = formData.get("videoId");
 
             const bunnyVideo = await createBunnyVideo(title);
-            const uploadResult = await uploadBunnyVideo(bunnyVideo.id, video);
+            if (!bunnyVideo.guid) {
+                throw new Error("Failed to create Bunny video.");
+                }
+
+            console.log("Bunny video created:", bunnyVideo);
+            
+            const uploadResult = await uploadBunnyVideo(bunnyVideo?.guid, video);
 
             const client = await clientPromise;
             const db = client.db("gotravel");
@@ -27,7 +36,7 @@ export async function POST(request, { params }) {
                 title: title.trim(),
                 description: description.trim(),
                 courseId: courseId,
-                videoId: bunnyVideo.id,
+                videoId: bunnyVideo.guid,
                 order: parseInt(formData.get("order")) || 0,
                 isPreview: formData.get("isPreview") === "true",
                 createdAt: new Date(),
@@ -49,5 +58,6 @@ export async function POST(request, { params }) {
 
     } catch (error) {
         console.error("Error creating lesson:", error);
-    }
+        return new Response('Error creating lesson', { status: 500 });
+} 
 }
