@@ -1,10 +1,16 @@
-export default function RootLayout({ children }) {
+import AdminSidebar from "@/components/admin/AdminSideBar";
+
+export const metadata = {
+  title: "GoTravel Admin",
+};
+
+export default function AdminLayout({ children }) {
   return (
-   
-      <div>
-        <h1>hii</h1>
-       {children}
-      </div>
-    
+    <div className="flex h-screen overflow-hidden bg-stone-900">
+      <AdminSidebar />
+      <main className="flex-1 overflow-y-auto">
+        {children}
+      </main>
+    </div>
   );
 }

@@ -19,7 +19,7 @@ export default function Home() {
       <Benefits />
       <Testimonials />
       <CtaBanner />
-      <Footer />
+      <Footer /> 
     </div>
   );
 }

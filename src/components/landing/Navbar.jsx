@@ -225,7 +225,7 @@ export default function Navbar() {
                       </button>
                     ) : (
                       <Link
-                        href="/login"
+                        href="/sign-in"
                         className="w-full flex items-center justify-center px-4 py-3 bg-amber-500 text-black font-semibold rounded-lg text-sm hover:bg-amber-600 transition-colors"
                       >
                         Sign In
