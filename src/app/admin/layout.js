@@ -1,10 +1,14 @@
+import { requireAdmin } from "@/lib/auth";
 import AdminSidebar from "@/components/admin/AdminSideBar";
 
 export const metadata = {
   title: "GoTravel Admin",
 };
 
-export default function AdminLayout({ children }) {
+export default async function AdminLayout({ children }) {
+ 
+  await requireAdmin();
+
   return (
     <div className="flex h-screen overflow-hidden bg-stone-900">
       <AdminSidebar />
