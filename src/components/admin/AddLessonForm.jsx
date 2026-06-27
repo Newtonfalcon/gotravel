@@ -202,7 +202,7 @@ export default function AddLessonForm({ courseId }) {
             onChange={(e) => dispatch({ type: "FIELD", key: "description", value: e.target.value })}
             placeholder="What does this lesson cover?"
             rows={3}
-            maxLength={400}
+            maxLength={400000}
             disabled={isDisabled}
             className="w-full bg-stone-950 border border-stone-700 rounded-xl px-4 py-3 text-stone-100 placeholder-stone-600 text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/30 transition-colors resize-none leading-relaxed disabled:opacity-50"
           />
