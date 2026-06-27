@@ -2,6 +2,61 @@ import { unstable_cache } from "next/cache";
 import { ObjectId } from "mongodb";
 import clientPromise from "./mongodb";
 
+// ── Admin: all courses (any status) ─────────────────────────────────────────
+export const getAdminCourses = unstable_cache(
+  async () => {
+    const client = await clientPromise;
+    const db = client.db("gotravel");
+    const courses = await db
+      .collection("courses")
+      .find({})
+      .project({
+        title: 1, shortDescription: 1, price: 1, thumbnail: 1,
+        category: 1, lessonCount: 1, status: 1, createdAt: 1, updatedAt: 1,
+      })
+      .sort({ createdAt: -1 })
+      .toArray();
+    return courses.map((c) => ({ ...c, _id: c._id.toString() }));
+  },
+  ["admin-courses-list"],
+  { revalidate: 30, tags: ["courses"] }
+);
+
+// ── Admin: single course + its lessons ──────────────────────────────────────
+export const getAdminCourseWithLessons = unstable_cache(
+  async (courseId) => {
+    if (!courseId || !ObjectId.isValid(courseId)) return null;
+    const client = await clientPromise;
+    const db = client.db("gotravel");
+
+    const [course, lessons] = await Promise.all([
+      db.collection("courses").findOne(
+        { _id: new ObjectId(courseId) },
+        {
+          projection: {
+            title: 1, shortDescription: 1, price: 1, thumbnail: 1,
+            category: 1, lessonCount: 1, status: 1, createdAt: 1, updatedAt: 1,
+          },
+        }
+      ),
+      db.collection("lessons")
+        .find({ courseId })
+        .project({ title: 1, description: 1, videoId: 1, order: 1, isPreview: 1, createdAt: 1 })
+        .sort({ order: 1 })
+        .toArray(),
+    ]);
+
+    if (!course) return null;
+
+    return {
+      course: { ...course, _id: course._id.toString() },
+      lessons: lessons.map((l) => ({ ...l, _id: l._id.toString() })),
+    };
+  },
+  ["admin-course-with-lessons"],
+  { revalidate: 30, tags: ["courses", "lessons"] }
+);
+
 export const getCourses = unstable_cache(
   async (page = 1, limit = 12, search = "") => {
     const client = await clientPromise;
