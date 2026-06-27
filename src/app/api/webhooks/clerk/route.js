@@ -118,11 +118,12 @@ function buildUserRecord(data) {
 
 export async function POST(request) {
   const payload = await request.text()
-  const headerPayload = await headers()
-
-  const svixId = headerPayload.get('svix-id')
-  const svixTimestamp = headerPayload.get('svix-timestamp')
-  const svixSignature = headerPayload.get('svix-signature')
+  
+  // Await the headers object safely (Next.js 15 style)
+  const headerList = await headers()
+  const svixId = headerList.get('svix-id')
+  const svixTimestamp = headerList.get('svix-timestamp')
+  const svixSignature = headerList.get('svix-signature')
 
   const webhookSecret = process.env.SVIX_SECRET
 
@@ -139,7 +140,6 @@ export async function POST(request) {
   }
 
   const wh = new Webhook(webhookSecret)
-
   let evt
 
   try {
@@ -150,7 +150,6 @@ export async function POST(request) {
     })
   } catch (err) {
     console.error('Webhook verification failed:', err)
-
     return new Response(
       `Webhook Error: ${err.message}`,
       { status: 400 }
@@ -166,7 +165,6 @@ export async function POST(request) {
 
     switch (type) {
       case 'user.created':
-      case 'user.updated':
         await users.updateOne(
           { clerkId: data.id },
           {
@@ -175,19 +173,35 @@ export async function POST(request) {
               updatedAt: new Date(),
             },
             $setOnInsert: {
+              courses: [], // Only initialize empty courses on creation
               createdAt: new Date(),
               role: 'user',
             },
           },
           { upsert: true }
         )
-        console.log(`Processed ${type} event for user ID: ${data.id}`)
+        console.log(`Processed user.created event for ID: ${data.id}`)
+        break
+
+      case 'user.updated':
+        await users.updateOne(
+          { clerkId: data.id },
+          {
+            $set: {
+              ...buildUserRecord(data),
+              updatedAt: new Date(),
+            },
+          },
+          { upsert: false } // No need to upsert if it's just an update
+        )
+        console.log(`Processed user.updated event for ID: ${data.id}`)
         break
 
       case 'user.deleted':
         await users.deleteOne({
           clerkId: data.id,
         })
+        console.log(`Processed user.deleted event for ID: ${data.id}`)
         break
 
       default:
@@ -195,14 +209,9 @@ export async function POST(request) {
         break
     }
 
-    return new Response('Success', {
-      status: 200,
-    })
+    return new Response('Success', { status: 200 })
   } catch (error) {
     console.error('Database error:', error)
-
-    return new Response('Database error', {
-      status: 500,
-    })
+    return new Response('Database error', { status: 500 })
   }
 }
