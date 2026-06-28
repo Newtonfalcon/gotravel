@@ -1,0 +1,1 @@
+export { AdminUsersSkeleton as default } from "@/components/ui/PageSkeletons";

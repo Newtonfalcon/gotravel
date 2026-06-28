@@ -1,0 +1,1 @@
+export { AdminCourseDetailSkeleton as default } from "@/components/ui/PageSkeletons";

@@ -1,0 +1,1 @@
+export { AdminCreateCourseSkeleton as default } from "@/components/ui/PageSkeletons";

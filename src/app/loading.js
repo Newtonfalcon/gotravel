@@ -1,0 +1,1 @@
+export { LandingPageSkeleton as default } from "@/components/ui/PageSkeletons"
