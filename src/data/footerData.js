@@ -1,26 +1,24 @@
+
 export const FOOTER_LINKS = {
   company: [
     { label: "About Us", path: "/about" },
-    { label: "Careers", path: "/careers" },
     { label: "Blog", path: "/blog" },
-    { label: "Press", path: "/press" },
+    { label: "Contact Us", path: "/contact" },
   ],
   courses: [
     { label: "All Courses", path: "/courses" },
-    { label: "Budget Travel", path: "/courses/budget" },
-    { label: "Photography", path: "/courses/photography" },
-    { label: "Solo Travel", path: "/courses/solo" },
+    { label: "Canada Visa", path: "/courses" },
+    { label: "Budget Travel", path: "/courses" },
+    { label: "Invitation Letters", path: "/courses" },
   ],
   support: [
-    { label: "Help Center", path: "/help" },
-    { label: "Contact Us", path: "/contact" },
-    { label: "FAQs", path: "/faq" },
-    { label: "Community", path: "/community" },
+    { label: "Help Center", path: "/contact" },
+    { label: "FAQs", path: "/contact" },
+    { label: "WhatsApp Us", path: "https://wa.me/2349038162915" },
   ],
   legal: [
     { label: "Privacy Policy", path: "/privacy" },
     { label: "Terms of Service", path: "/terms" },
-    { label: "Cookie Policy", path: "/cookies" },
     { label: "Refund Policy", path: "/refund" },
   ],
 };
@@ -29,37 +27,28 @@ export const SOCIAL_LINKS = [
   {
     name: "Instagram",
     icon: "Instagram",
-    url: "https://instagram.com/travelcourses",
+    url: "https://instagram.com/gotravelng",
   },
   {
     name: "Facebook",
     icon: "Facebook",
-    url: "https://facebook.com/travelcourses",
+    url: "https://facebook.com/gotravelng",
   },
   {
     name: "YouTube",
     icon: "Youtube",
-    url: "https://youtube.com/@travelcourses",
-  },
-  {
-    name: "Twitter",
-    icon: "Twitter",
-    url: "https://twitter.com/travelcourses",
-  },
-  {
-    name: "LinkedIn",
-    icon: "Linkedin",
-    url: "https://linkedin.com/company/travelcourses",
+    url: "https://youtube.com/@gotravelng",
   },
   {
     name: "TikTok",
     icon: "Music2",
-    url: "https://tiktok.com/@travelcourses",
+    url: "https://tiktok.com/@gotravelng",
   },
 ];
 
 export const CONTACT_INFO = {
-  email: "hello@travelcourses.com",
-  phone: "+1 (800) 555-0199",
-  address: "123 Adventure Lane, San Francisco, CA 94102",
+  email: "gotravel@gmail.com",
+  phone: "09038162915",
+  address: "Edo, Nigeria",
 };
+

@@ -1,6 +1,7 @@
+
 import React from "react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, MessageCircle } from "lucide-react";
 
 export default function CtaBanner() {
   return (
@@ -11,7 +12,7 @@ export default function CtaBanner() {
           <span className="text-amber-500"> Smarter?</span>
         </h2>
         <p className="mt-4 text-gray-400 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
-          Join 12,000+ students already learning to travel better. Your next
+          Join 8,000+ Nigerians already learning to travel better. Your next
           adventure is one course away.
         </p>
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -22,12 +23,15 @@ export default function CtaBanner() {
             Browse Courses
             <ArrowRight className="w-5 h-5" />
           </Link>
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-2 px-8 py-4 border border-gray-700 text-gray-300 hover:border-gray-500 hover:text-white font-medium rounded-lg transition-colors text-sm sm:text-base w-full sm:w-auto justify-center"
+          <a
+            href="https://wa.me/2349038162915"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-8 py-4 border border-gray-700 text-gray-300 hover:border-green-500 hover:text-green-400 font-medium rounded-lg transition-colors text-sm sm:text-base w-full sm:w-auto justify-center"
           >
-            Talk to Us
-          </Link>
+            <MessageCircle className="w-5 h-5" />
+            WhatsApp Us
+          </a>
         </div>
       </div>
     </section>

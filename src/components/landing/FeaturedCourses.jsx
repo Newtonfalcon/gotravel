@@ -1,19 +1,28 @@
+
 import React from "react";
 import Link from "next/link";
-import { Star, Users, Clock, BarChart3, ArrowRight } from "lucide-react";
+import { Star, Users, Clock, ArrowRight } from "lucide-react";
 import { FEATURED_COURSES } from "@/data/siteData";
-//import { FEATURED_COURSES } from "@/lib/siteData";
 
 function CourseCard({ course }) {
-    
+  const initial = course.title.charAt(0).toUpperCase();
+
   return (
     <div className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition-shadow duration-300">
-      <div className="relative overflow-hidden aspect-[3/2]">
-        <img
-          src={course.image}
-          alt={course.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-        />
+      <div className="relative overflow-hidden aspect-[3/2] bg-gradient-to-br from-amber-50 to-orange-100">
+        {course.image ? (
+          <img
+            src={course.image}
+            alt={course.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <span className="text-7xl font-bold text-amber-300 select-none">
+              {initial}
+            </span>
+          </div>
+        )}
         <span className="absolute top-3 right-3 bg-amber-500 text-black text-xs font-bold px-2.5 py-1 rounded-full">
           {course.level}
         </span>
@@ -41,15 +50,11 @@ function CourseCard({ course }) {
         </div>
         <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
           <div className="flex items-baseline gap-2">
-            <span className="text-xl font-bold text-gray-900">
-              {course.price}
-            </span>
-            <span className="text-sm text-gray-400 line-through">
-              {course.originalPrice}
-            </span>
+            <span className="text-xl font-bold text-gray-900">{course.price}</span>
+            <span className="text-sm text-gray-400 line-through">{course.originalPrice}</span>
           </div>
           <Link
-            href={`/courses/${course.id}`}
+            href="/courses"
             className="text-sm font-semibold text-amber-600 hover:text-amber-700 flex items-center gap-1 transition-colors"
           >
             Enroll
@@ -73,8 +78,7 @@ export default function FeaturedCourses() {
             Start Your Journey Today
           </h2>
           <p className="mt-3 text-gray-500">
-            Handpicked courses designed to transform you into a smarter, more
-            confident traveler.
+            Courses built specifically for Nigerians — from visa applications to landing abroad confidently.
           </p>
         </div>
 
