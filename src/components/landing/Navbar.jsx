@@ -61,6 +61,13 @@ export default function Navbar() {
 
   const isActive = (path) => pathname === path;
 
+  // Swap "Home" → "Dashboard" for signed-in users
+  const navLinks = NAV_LINKS.map((link) =>
+    link.path === "/" && isSignedIn
+      ? { label: "Dashboard", path: "/dashboard" }
+      : link
+  );
+
   return (
     <>
       <nav
@@ -84,7 +91,7 @@ export default function Navbar() {
             </Link>
 
             <div className="hidden lg:flex items-center gap-1">
-              {NAV_LINKS.map((link) => (
+              {navLinks.map((link) => (
                 <Link
                   key={link.path}
                   href={link.path || "#"}
@@ -196,7 +203,7 @@ export default function Navbar() {
               )}
 
               <div className="flex-1 overflow-y-auto py-3">
-                {NAV_LINKS.map((link) => (
+                {navLinks.map((link) => (
                   <Link
                     key={link.path}
                     href={link.path}
