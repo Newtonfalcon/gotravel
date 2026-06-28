@@ -1,6 +1,6 @@
 "use client";
 
-import { Bone } from "@/components/ui/Skeleton";
+import { Bone } from "./Skeleton";
 
 // ── Shared nav skeleton (light, public pages) ─────────────────────────────────
 function NavSkeleton() {
