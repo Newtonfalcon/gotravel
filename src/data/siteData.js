@@ -7,29 +7,34 @@ export const NAV_LINKS = [
   { label: "Contact", path: "/contact" },
 ];
 
+
 export const HERO_SLIDES = [
   {
-    image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1280&auto=format&fit=crop&q=80",
+    // A confident Black traveler with luggage smiling in an airport terminal, matching "Travel the World with Confidence"
+    image: "https://thumbs.dreamstime.com/b/international-passport-citizen-nigeria-suitcase-departure-airport-travel-369736446.jpg",
     headline: "Travel the World with Confidence",
     subheadline: "Expert-led courses built for Nigerians — from visa applications to landing abroad stress-free.",
     cta: "Explore Courses",
     ctaLink: "/courses",
   },
   {
-    image: "https://images.unsplash.com/photo-1488161628813-04466f872be2?w=1280&auto=format&fit=crop&q=80",
+    // A joyful Black professional/student with a backpack outdoors, perfect for the "Japa Journey Starts Here" narrative
+    image: "https://www.travelstart.com.ng/blog/wp-content/uploads/sites/2/2026/03/Orange_Suit_1350x1350-scaled.jpg",
     headline: "Your Japa Journey Starts Here",
     subheadline: "Learn from Nigerians who have done it. Canada, UK, USA — we'll show you the way.",
     cta: "Start Learning",
     ctaLink: "/courses",
   },
   {
-    image: "https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=1280&auto=format&fit=crop&q=80",
+    // A happy Black person triumphantly holding documentation/passport, aligning perfectly with "Get That Visa Approved"
+    image: "https://imgcdn.stablediffusionweb.com/2024/12/14/a34053c6-f4c1-4c2c-80e9-8a82cd8822b3.jpg",
     headline: "Get That Visa Approved",
     subheadline: "Step-by-step guidance for invitation letters, visa processing, and travel documentation.",
     cta: "Get Started",
     ctaLink: "/courses",
   },
 ];
+
 
 export const STATS = [
   { value: "8,000+", label: "Nigerians Trained" },
