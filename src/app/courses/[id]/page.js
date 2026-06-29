@@ -31,9 +31,7 @@ export default async function CourseDetailPage({ params }) {
   if (!course) notFound();
 
   const previewLessons = lessons.filter((l) => l.isPreview);
-  const firstLesson = lessons[0];
   const firstPreview = previewLessons[0];
-  const startLesson = firstPreview ?? firstLesson;
 
   return (
     <div className="min-h-screen bg-white">
@@ -88,13 +86,13 @@ export default async function CourseDetailPage({ params }) {
             </span>
 
             <div className="flex items-center gap-3 flex-wrap">
-              {startLesson && (
+              {firstPreview && (
                 <Link
-                  href={`/courses/${id}/learn?lesson=${startLesson._id}`}
+                  href={`/courses/${id}/learn?lesson=${firstPreview._id}`}
                   className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 hover:bg-gray-800 text-white font-semibold rounded-xl text-sm transition-colors"
                 >
                   <PlayCircle className="w-4 h-4" />
-                  {firstPreview ? "Preview Free Lesson" : "Start Learning"}
+                  Preview Free Lesson
                 </Link>
               )}
               <Link
