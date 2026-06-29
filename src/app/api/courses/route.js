@@ -1,5 +1,12 @@
 import clientPromise from "@/lib/mongodb";
 
+
+
+
+
+
+
+
 export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const page = Math.max(1, parseInt(searchParams.get("page") ?? "1"));

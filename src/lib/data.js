@@ -122,3 +122,29 @@ export const getLessons = unstable_cache(
   ["lessons-list"],
   { revalidate: 60, tags: ["lessons"] }
 );
+
+
+
+
+// Admin: dashboard stats (single trip, two parallel counts) ──────────────
+export const getAdminStats = unstable_cache(
+  async () => {
+    const client = await clientPromise;
+    const db = client.db("gotravel");
+
+    const [courseAgg, lessonCount, userCount] = await Promise.all([
+      db.collection("courses").aggregate([
+        { $group: { _id: "$status", count: { $sum: 1 } } },
+      ]).toArray(),
+      db.collection("lessons").countDocuments(),
+      db.collection("users").countDocuments(),
+    ]);
+
+    const published = courseAgg.find((s) => s._id === "published")?.count ?? 0;
+    const draft     = courseAgg.find((s) => s._id === "draft")?.count ?? 0;
+
+    return { total: published + draft, published, draft, lessonCount, userCount };
+  },
+  ["admin-stats"],
+  { revalidate: 30, tags: ["courses", "lessons"] }
+);

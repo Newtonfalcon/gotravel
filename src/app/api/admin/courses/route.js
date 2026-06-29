@@ -1,5 +1,12 @@
 import clientPromise from "@/lib/mongodb";
 
+
+
+
+
+
+
+
 export async function POST(req) {
     const {title, description, price, category} = await req.json();
 

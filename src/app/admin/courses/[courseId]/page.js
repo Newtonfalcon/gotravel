@@ -1,9 +1,8 @@
-
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import {
   ArrowLeft, BookOpen, DollarSign, Tag, Play, Lock,
-  CheckCircle, Video,
+  CheckCircle, Video, Pencil,
 } from "lucide-react";
 import { getAdminCourseWithLessons } from "@/lib/data";
 import AddLessonForm from "@/components/admin/AddLessonForm";
@@ -111,11 +110,20 @@ export default async function CourseBuilderPage({ params }) {
                   )}
                 </div>
               </div>
-              <span
-                className={`shrink-0 text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full ${STATUS_STYLES[course.status] ?? STATUS_STYLES.draft}`}
-              >
-                {course.status}
-              </span>
+              <div className="flex items-center gap-2 shrink-0">
+                <span
+                  className={`text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full ${STATUS_STYLES[course.status] ?? STATUS_STYLES.draft}`}
+                >
+                  {course.status}
+                </span>
+                <Link
+                  href={`/admin/courses/${courseId}/edit`}
+                  className="flex items-center gap-1.5 h-8 px-3 rounded-lg bg-stone-800 border border-stone-700 text-stone-400 text-xs font-semibold hover:text-amber-400 hover:border-amber-400/40 transition-all duration-150"
+                >
+                  <Pencil className="w-3 h-3" />
+                  Edit details
+                </Link>
+              </div>
             </div>
 
             {/* Meta */}
