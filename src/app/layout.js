@@ -58,7 +58,7 @@ export const metadata = {
   icons: {
     icon: [
       {
-        url: "/favicon.ico",
+        url: "/logo.png",
       },
       {
         url: "/logo.png",
@@ -66,8 +66,8 @@ export const metadata = {
         sizes: "512x512",
       },
     ],
-    shortcut: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
   },
 
   manifest: "/manifest.webmanifest",
