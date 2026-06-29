@@ -1,4 +1,4 @@
-import { ClerkProvider } from '@clerk/nextjs'
+import { ClerkProvider } from "@clerk/nextjs";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -12,84 +12,108 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
-  // ── Base URL (required for absolute og/twitter image URLs) ──────────────
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_APP_URL ?? "https://gotravelcourses.com"
-  ),
+const siteUrl =
+  process.env.NEXT_PUBLIC_APP_URL ||
+  "https://gotravel-alpha.vercel.app";
 
-  // ── Core ─────────────────────────────────────────────────────────────────
+export const metadata = {
+  metadataBase: new URL(siteUrl),
+
   applicationName: "GoTravel",
+
   title: {
-    default: "GoTravel — Travel the World with Confidence",
-    template: "%s | GoTravel",          // sub-pages: "About | GoTravel"
+    default: "GoTravel | Travel & Holiday Support",
+    template: "%s | GoTravel",
   },
+
   description:
-    "GoTravel helps you travel the world with ease. Expert-led courses on budget travel, photography, solo trips, and more — learn at your own pace and explore with confidence.",
+    "GoTravel provides trusted travel services including visa assistance, flight bookings, holiday packages, travel consultations and premium travel courses.",
+
   keywords: [
-    "travel courses",
-    "learn to travel",
-    "budget travel",
-    "travel photography",
-    "solo travel",
-    "travel tips",
-    "online travel education",
     "GoTravel",
+    "Travel Agency",
+    "Travel Courses",
+    "Visa Assistance",
+    "Holiday Packages",
+    "Flight Booking",
+    "Study Abroad",
+    "Travel Nigeria",
   ],
-  authors: [{ name: "GoTravel Team", url: "https://gotravelcourses.com" }],
+
+  authors: [
+    {
+      name: "GoTravel",
+      url: siteUrl,
+    },
+  ],
+
   creator: "GoTravel",
   publisher: "GoTravel",
-  category: "Education",
+  category: "Travel",
 
-  // ── Icons ─────────────────────────────────────────────────────────────────
-  icons: {
-    icon: [
-      { url: "/logo.png", type: "image/png" },
-    ],
-    apple: [
-      { url: "/logo.png", type: "image/png" },   // shown on iOS home screen
-    ],
-    shortcut: "/logo.png",
+  alternates: {
+    canonical: siteUrl,
   },
 
-  // ── Open Graph (Facebook, WhatsApp, LinkedIn previews) ───────────────────
+  icons: {
+    icon: [
+      {
+        url: "/favicon.ico",
+      },
+      {
+        url: "/logo.png",
+        type: "image/png",
+        sizes: "512x512",
+      },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
+
+  manifest: "/manifest.webmanifest",
+
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://gotravelcourses.com",
+    url: siteUrl,
     siteName: "GoTravel",
-    title: "GoTravel — Travel the World with Confidence",
+
+    title: "GoTravel | Travel & Holiday Support",
+
     description:
-      "Expert-led travel courses that help you explore the world smarter, safer, and on any budget. Join 12,000+ students from 85+ countries.",
+      "Travel smarter with trusted visa support, travel courses and holiday packages.",
+
     images: [
       {
-        url: "/logo.png",
+        url: "/og-image.png", // Recommended for WhatsApp/Facebook
         width: 1200,
         height: 630,
-        alt: "GoTravel — Travel the World with Confidence",
+        alt: "GoTravel",
       },
     ],
   },
 
-  // ── Twitter / X card ─────────────────────────────────────────────────────
   twitter: {
     card: "summary_large_image",
-    title: "GoTravel — Travel the World with Confidence",
+
+    title: "GoTravel | Travel & Holiday Support",
+
     description:
-      "Expert-led travel courses that help you explore the world smarter, safer, and on any budget.",
-    images: ["/logo.png"],
-    creator: "@gotravelcourses",   // update to your actual handle
+      "Travel smarter with trusted visa support, travel courses and holiday packages.",
+
+    images: ["/og-image.png"],
   },
 
-  // ── Robots / indexing ────────────────────────────────────────────────────
   robots: {
     index: true,
     follow: true,
+
     googleBot: {
       index: true,
       follow: true,
       "max-image-preview": "large",
       "max-snippet": -1,
+      "max-video-preview": -1,
     },
   },
 };
@@ -98,7 +122,8 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
+      className={`${geistSans.variable} ${geistMono.variable}`}
     >
       <body>
         <ClerkProvider>{children}</ClerkProvider>

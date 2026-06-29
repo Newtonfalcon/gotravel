@@ -10,12 +10,12 @@ export const NAV_LINKS = [
 
 export const HERO_SLIDES = [
   {
-    // A confident Black traveler with luggage smiling in an airport terminal, matching "Travel the World with Confidence"
-    image: "https://thumbs.dreamstime.com/b/international-passport-citizen-nigeria-suitcase-departure-airport-travel-369736446.jpg",
-    headline: "Travel the World with Confidence",
-    subheadline: "Expert-led courses built for Nigerians — from visa applications to landing abroad stress-free.",
-    cta: "Explore Courses",
-    ctaLink: "/courses",
+    // A Black traveler interacting with a mobile device/passport at an airport lounge, fitting the digital sign-in concept
+    image: "/mansmile.png",
+    headline: "Welcome Back, Traveler",
+    subheadline: "Sign in to access your dashboard, track your visa guides, and pick up right where you left off.",
+    cta: "Sign In to Access",
+    ctaLink: "/sign-in",
   },
   {
     // A joyful Black professional/student with a backpack outdoors, perfect for the "Japa Journey Starts Here" narrative
@@ -49,8 +49,8 @@ export const FEATURED_COURSES = [
     title: "Canada Visa Mastery",
     description: "Everything you need to get your Canadian visitor, study, or work visa approved — step by step.",
     image: "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&auto=format&fit=crop&q=80",
-    price: "₦25,000",
-    originalPrice: "₦50,000",
+    price: "₦20,000",
+    originalPrice: "₦28,000",
     rating: 4.9,
     students: 3200,
     duration: "4 weeks",
@@ -61,7 +61,7 @@ export const FEATURED_COURSES = [
     title: "Budget Travel for Nigerians",
     description: "Travel internationally without breaking the bank. Flights, hotels, and daily expenses on a naira budget.",
     image: "https://images.unsplash.com/photo-1527631746610-bca00a040d60?w=600&auto=format&fit=crop&q=80",
-    price: "₦18,000",
+    price: "₦20,000",
     originalPrice: "₦35,000",
     rating: 4.8,
     students: 2100,
@@ -73,7 +73,7 @@ export const FEATURED_COURSES = [
     title: "Invitation Letter & Sponsorship Guide",
     description: "Learn how to write, obtain, and submit a genuine invitation letter that boosts your visa approval chances.",
     image: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&auto=format&fit=crop&q=80",
-    price: "₦15,000",
+    price: "₦20,000",
     originalPrice: "₦30,000",
     rating: 5.0,
     students: 1800,

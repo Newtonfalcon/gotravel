@@ -302,7 +302,7 @@ export default function CheckoutForm({
 
       if (!res.ok || data.error) {
         setPayState("error");
-        setErrorMsg(data.message ?? "Could not start payment. Please try again.");
+        setErrorMsg(data.error ?? "Could not start payment. Please try again.");
         return;
       }
       

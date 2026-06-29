@@ -54,7 +54,7 @@ export async function POST(request) {
 
         const alreadyPurchased = user.courses?.some((id) => id.toString() === courseId);
         if (alreadyPurchased) {
-            return NextResponse.json({ error: "You already own this course." }, { status: 400 });
+            return NextResponse.json({ error: "You already own this course, go to dashboard." }, { status: 400 });
         }
 
         const txRef = generateTxRef(userId);
@@ -80,7 +80,6 @@ export async function POST(request) {
             }
         });
 
-        console.log(`payment response   ${response?.data?.data?.link}`);
         
 
         // 💡 BUG FIX: Ensure Flutterwave responded with a valid payment link safely
@@ -103,3 +102,6 @@ export async function POST(request) {
         }, { status: 500 });
     }
 }
+
+
+
