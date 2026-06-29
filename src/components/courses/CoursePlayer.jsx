@@ -251,18 +251,24 @@ export default function CoursePlayer({ course, lessons, initialLesson, courseId 
     if (nextLesson && nextLesson.isPreview) selectLesson(nextLesson);
   }, [activeLesson._id, nextLesson, selectLesson]);
 
+
+     const handleBack = () => {
+      if (window.history.length > 1) {
+        router.back();
+      } else {
+        router.push("/dashboard");
+      }
+    };
+
   return (
     <div className="h-[100dvh] flex flex-col bg-gray-950 overflow-hidden">
       {/* ── Top bar ── */}
       <header className="shrink-0 h-14 flex items-center justify-between px-4 bg-gray-900 border-b border-gray-800 z-20">
         <div className="flex items-center gap-3 min-w-0">
-          <Link
-            href={`/courses/${courseId}`}
-            className="flex items-center gap-1.5 text-gray-400 hover:text-white transition-colors text-sm shrink-0"
-          >
+          <button onClick={handleBack} className="flex items-center gap-1.5 text-gray-400 hover:text-white transition-colors text-sm shrink-0">
             <ChevronLeft className="w-4 h-4" />
             <span className="hidden sm:inline">Back</span>
-          </Link>
+          </button>
           <div className="w-px h-5 bg-gray-700 shrink-0" />
           <p className="text-white text-sm font-semibold truncate">{course.title}</p>
         </div>

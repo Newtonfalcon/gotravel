@@ -1,0 +1,24 @@
+{
+  "name": "GoTravel - Travel & Holiday Support",
+  "short_name": "GoTravel",
+  "description": "Travel with confidence. Visa assistance, holiday packages, travel courses and expert travel support.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0B2E6B",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

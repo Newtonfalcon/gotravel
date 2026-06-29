@@ -16,9 +16,9 @@ export const FOOTER_LINKS = {
     { label: "WhatsApp Us", path: "https://wa.me/2349038162915" },
   ],
   legal: [
-    { label: "Privacy Policy", path: "/privacy" },
-    { label: "Terms of Service", path: "/terms" },
-    { label: "Refund Policy", path: "/refund" },
+    { label: "Privacy Policy", path: "/about" },
+    { label: "Terms of Service", path: "/about" },
+    { label: "Refund Policy", path: "/about" },
   ],
 };
 

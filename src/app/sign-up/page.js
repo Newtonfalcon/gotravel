@@ -30,7 +30,8 @@ export default function SignUpPage() {
           <SignUp
             routing="hash"
             signInUrl="/sign-in"
-            afterSignUpUrl="/dashboard"
+            forceRedirectUrl="/dashboard"
+            
           />
         </div>
 

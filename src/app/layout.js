@@ -85,7 +85,7 @@ export const metadata = {
 
     images: [
       {
-        url: "/og-image.png", // Recommended for WhatsApp/Facebook
+        url: "https://gotravel-alpha.vercel.app/og-image.png", // Recommended for WhatsApp/Facebook
         width: 1200,
         height: 630,
         alt: "GoTravel",
