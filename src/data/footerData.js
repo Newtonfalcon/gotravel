@@ -1,4 +1,3 @@
-
 export const FOOTER_LINKS = {
   company: [
     { label: "About Us", path: "/about" },
@@ -47,8 +46,7 @@ export const SOCIAL_LINKS = [
 ];
 
 export const CONTACT_INFO = {
-  email: "gotravel@gmail.com",
-  phone: "09038162915",
-  address: "Edo, Nigeria",
+  email: "gotravelsupport@gmail.com",
+  phone: "+234 705 533 3344",
+  address: "2 Omorogbe Street, Off Ihama Road, GRA, Benin City, Edo State",
 };
-
