@@ -28,11 +28,11 @@ if (!uri) {
 
 const options = {
   maxPoolSize: 10,        // max connections kept open per server instance
-  minPoolSize: 2,         // keep at least 2 warm so first requests don't wait
+  minPoolSize: 0,         // keep at least 2 warm so first requests don't wait
   maxIdleTimeMS: 30000,   // close idle connections after 30s
-  serverSelectionTimeoutMS: 5000,  // fail fast if MongoDB is unreachable
+  serverSelectionTimeoutMS: 10000,  // fail fast if MongoDB is unreachable
   socketTimeoutMS: 45000,          // drop stalled queries after 45s
-  connectTimeoutMS: 10000,         // give up connecting after 10s
+  connectTimeoutMS: 15000,         // give up connecting after 10s
   retryWrites: true,               // auto-retry transient write failures
   retryReads: true,                // auto-retry transient read failures
 };

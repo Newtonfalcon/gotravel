@@ -92,7 +92,7 @@ export const getCourses = unstable_cache(
   { revalidate: 60, tags: ["courses"] }
 );
 
-export const getCourse = unstable_cache(
+/*export const getCourse = unstable_cache(
   async (courseId) => {
     if (!courseId || !ObjectId.isValid(courseId)) return null;
     const client = await clientPromise;
@@ -102,6 +102,28 @@ export const getCourse = unstable_cache(
       { projection: { title: 1, shortDescription: 1, price: 1, thumbnail: 1, category: 1, lessonCount: 1 } }
     );
     return course ? { ...course, _id: course._id.toString() } : null;
+  },
+  ["course-detail"],
+  { revalidate: 60, tags: ["courses"] }
+);*/
+
+
+
+export const getCourse = unstable_cache(
+  async (courseId) => {
+    if (!courseId || !ObjectId.isValid(courseId)) return null;
+    try {
+      const client = await clientPromise;
+      const db = client.db("gotravel");
+      const course = await db.collection("courses").findOne(
+        { _id: new ObjectId(courseId), status: "published" },
+        { projection: { title: 1, shortDescription: 1, price: 1, thumbnail: 1, category: 1, lessonCount: 1 } }
+      );
+      return course ? { ...course, _id: course._id.toString() } : null;
+    } catch (err) {
+      console.error("getCourse DB error:", err);
+      throw err; // ← critical: rethrow so Next.js does NOT cache the failed result
+    }
   },
   ["course-detail"],
   { revalidate: 60, tags: ["courses"] }
