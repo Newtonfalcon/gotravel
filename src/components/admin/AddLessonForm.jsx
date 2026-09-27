@@ -109,18 +109,52 @@ export default function AddLessonForm({ courseId }) {
     startRef.current = Date.now();
     dispatch({ type: "UPLOADING" });
 
-    const data = new FormData();
-    data.append("title", s.title.trim());
-    data.append("description", s.description.trim());
-    data.append("video", s.file);
-    data.append("videoId", `tmp-${Date.now()}`);
-    data.append("order", s.order || "0");
-    data.append("isPreview", String(s.isPreview));
-
     const source = axios.CancelToken.source();
     cancelRef.current = source;
 
     try {
+      const createResponse = await axios.post(
+        "/api/upload/bunny/createvideo",
+        { title: s.title.trim() },
+        { cancelToken: source.token }
+      );
+
+      const videoId = createResponse.data?.guid;
+      if (!videoId) {
+        throw new Error(createResponse.data?.message || "Bunny did not return a video ID.");
+      }
+
+      const libraryId = process.env.NEXT_PUBLIC_BUNNY_LIBRARY_ID || process.env.BUNNY_LIBRARY_ID;
+      const accessKey = process.env.NEXT_PUBLIC_BUNNY_API_KEY || process.env.BUNNY_API_KEY;
+
+      if (!libraryId || !accessKey) {
+        throw new Error("Bunny upload credentials are missing in the environment.");
+      }
+
+      const uploadResponse = await fetch(
+        `https://video.bunnycdn.com/library/${libraryId}/videos/${videoId}`,
+        {
+          method: "PUT",
+          headers: {
+            AccessKey: accessKey,
+            "Content-Type": "application/octet-stream",
+          },
+          body: s.file,
+        }
+      );
+
+      if (!uploadResponse.ok) {
+        const uploadText = await uploadResponse.text();
+        throw new Error(uploadText || "Bunny upload failed.");
+      }
+
+      const data = new FormData();
+      data.append("title", s.title.trim());
+      data.append("description", s.description.trim());
+      data.append("videoId", videoId);
+      data.append("order", s.order || "0");
+      data.append("isPreview", String(s.isPreview));
+
       const res = await axios.post(
         `/api/admin/courses/${courseId}/lessons`,
         data,
@@ -154,7 +188,6 @@ export default function AddLessonForm({ courseId }) {
       setTimeout(() => {
         dispatch({ type: "RESET" });
         if (fileRef.current) fileRef.current.value = "";
-        // Refresh server component data without full navigation
         router.refresh();
       }, 1400);
     } catch (err) {
@@ -163,7 +196,9 @@ export default function AddLessonForm({ courseId }) {
         if (fileRef.current) fileRef.current.value = "";
         return;
       }
-      dispatch({ type: "ERROR", error: "Upload failed. Check your connection and try again." });
+
+      const message = err?.response?.data?.message || err?.message || "Upload failed. Check your connection and try again.";
+      dispatch({ type: "ERROR", error: message });
     }
   }
 

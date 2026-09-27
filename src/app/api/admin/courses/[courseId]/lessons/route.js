@@ -79,30 +79,41 @@ export async function POST(request, { params }) {
 
   const formData = await request.formData();
 
-  const title       = formData.get("title")?.toString().trim();
+  const title = formData.get("title")?.toString().trim();
   const description = formData.get("description")?.toString().trim();
-  const video       = formData.get("video");
-  const order       = parseInt(formData.get("order") ?? "0", 10);
-  const isPreview   = formData.get("isPreview") === "true";
+  const video = formData.get("video");
+  const videoId = formData.get("videoId")?.toString().trim();
+  const order = parseInt(formData.get("order") ?? "0", 10);
+  const isPreview = formData.get("isPreview") === "true";
 
-  if (!title || !description || !video) {
+  if (!title || !description) {
     return Response.json(
-      { success: false, message: "Title, description, and video are required." },
+      { success: false, message: "Title and description are required." },
       { status: 400 }
     );
   }
 
   try {
-    // 1. Create a Bunny video slot
-    const bunnyVideo = await createBunnyVideo(title);
-    if (!bunnyVideo?.guid) {
-      throw new Error("Bunny did not return a video GUID.");
+    let bunnyVideoId = videoId;
+
+    // Backward-compatible fallback for older clients that still upload the file here.
+    if (!bunnyVideoId && video) {
+      const bunnyVideo = await createBunnyVideo(title);
+      if (!bunnyVideo?.guid) {
+        throw new Error("Bunny did not return a video GUID.");
+      }
+
+      await uploadBunnyVideo(bunnyVideo.guid, video);
+      bunnyVideoId = bunnyVideo.guid;
     }
 
-    // 2. Upload the binary to Bunny
-    await uploadBunnyVideo(bunnyVideo.guid, video);
+    if (!bunnyVideoId) {
+      return Response.json(
+        { success: false, message: "A valid Bunny video ID is required." },
+        { status: 400 }
+      );
+    }
 
-    // 3. Persist the lesson + bump lessonCount atomically
     const client = await clientPromise;
     const db = client.db("gotravel");
 
@@ -110,7 +121,7 @@ export async function POST(request, { params }) {
       courseId,
       title,
       description,
-      videoId: bunnyVideo.guid,
+      videoId: bunnyVideoId,
       order: isNaN(order) ? 0 : order,
       isPreview,
       createdAt: new Date(),
@@ -125,7 +136,6 @@ export async function POST(request, { params }) {
       ),
     ]);
 
-    // 4. Bust the relevant caches so the admin page reflects new data immediately
     revalidateTag("lessons");
     revalidateTag("courses");
 
