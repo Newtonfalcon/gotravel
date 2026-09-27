@@ -124,28 +124,23 @@ export default function AddLessonForm({ courseId }) {
         throw new Error(createResponse.data?.message || "Bunny did not return a video ID.");
       }
 
-      const libraryId = process.env.NEXT_PUBLIC_BUNNY_LIBRARY_ID || process.env.BUNNY_LIBRARY_ID;
-      const accessKey = process.env.NEXT_PUBLIC_BUNNY_API_KEY || process.env.BUNNY_API_KEY;
+      const uploadForm = new FormData();
+      uploadForm.append("video", s.file);
+      uploadForm.append("videoId", videoId);
 
-      if (!libraryId || !accessKey) {
-        throw new Error("Bunny upload credentials are missing in the environment.");
-      }
-
-      const uploadResponse = await fetch(
-        `https://video.bunnycdn.com/library/${libraryId}/videos/${videoId}`,
+      const uploadResponse = await axios.post(
+        "/api/upload/bunny/uploadvideo",
+        uploadForm,
         {
-          method: "PUT",
+          cancelToken: source.token,
           headers: {
-            AccessKey: accessKey,
-            "Content-Type": "application/octet-stream",
+            "Content-Type": "multipart/form-data",
           },
-          body: s.file,
         }
       );
 
-      if (!uploadResponse.ok) {
-        const uploadText = await uploadResponse.text();
-        throw new Error(uploadText || "Bunny upload failed.");
+      if (!uploadResponse.data?.success) {
+        throw new Error(uploadResponse.data?.message || uploadResponse.data?.error || "Bunny upload failed.");
       }
 
       const data = new FormData();
