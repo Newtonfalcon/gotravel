@@ -6,12 +6,11 @@ export const metadata = {
 };
 
 export default async function AdminLayout({ children }) {
- 
-  await requireAdmin();
+  const adminUser = await requireAdmin();
 
   return (
     <div className="flex h-screen overflow-hidden bg-stone-900">
-      <AdminSidebar />
+      <AdminSidebar adminUser={adminUser} />
       <main className="flex-1 overflow-y-auto">
         {children}
       </main>

@@ -4,11 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, Compass } from "lucide-react";
+import { ChevronLeft, ChevronRight, Compass, LogOut } from "lucide-react";
 import { clsx } from "clsx";
+import { SignOutButton } from "@clerk/nextjs";
 import { adminNavSections } from "../../data/admindata";
 
-export default function AdminSidebar() {
+export default function AdminSidebar({ adminUser }) {
     
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
@@ -137,40 +138,59 @@ export default function AdminSidebar() {
         ))}
       </nav>
 
-      <div className="border-t border-stone-800 px-4 py-4">
-        <AnimatePresence initial={false}>
-          {!collapsed ? (
-            <motion.div
-              key="user-full"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
-              className="flex items-center gap-3"
-            >
-              <div className="size-8 rounded-full bg-amber-400/20 flex items-center justify-center shrink-0">
-                <span className="text-amber-400 text-xs font-bold">A</span>
-              </div>
-              <div className="min-w-0">
-                <p className="text-xs font-semibold text-stone-200 truncate">Admin</p>
-                <p className="text-[10px] text-stone-500 truncate">admin@gotravel.com</p>
-              </div>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="user-collapsed"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
-              className="flex justify-center"
-            >
-              <div className="size-8 rounded-full bg-amber-400/20 flex items-center justify-center">
-                <span className="text-amber-400 text-xs font-bold">A</span>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+      <div className="border-t border-stone-800 px-4 py-4 space-y-3">
+        <Link
+          href="/admin/profile"
+          className="block rounded-xl border border-stone-800 bg-stone-900/70 px-2.5 py-2.5 transition hover:border-amber-400/30 hover:bg-stone-900"
+        >
+          <AnimatePresence initial={false}>
+            {!collapsed ? (
+              <motion.div
+                key="user-full"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.15 }}
+                className="flex items-center gap-3"
+              >
+                <div className="size-8 rounded-full bg-amber-400/20 flex items-center justify-center shrink-0">
+                  <span className="text-amber-400 text-xs font-bold">
+                    {(adminUser?.name || "A").charAt(0).toUpperCase()}
+                  </span>
+                </div>
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold text-stone-200 truncate">{adminUser?.name || "Admin"}</p>
+                  <p className="text-[10px] text-stone-500 truncate">{adminUser?.email || "admin@gotravel.com"}</p>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="user-collapsed"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.15 }}
+                className="flex justify-center"
+              >
+                <div className="size-8 rounded-full bg-amber-400/20 flex items-center justify-center">
+                  <span className="text-amber-400 text-xs font-bold">
+                    {(adminUser?.name || "A").charAt(0).toUpperCase()}
+                  </span>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </Link>
+
+        <SignOutButton>
+          <button
+            type="button"
+            className="flex w-full items-center justify-center gap-2 rounded-xl border border-stone-800 bg-stone-950 px-3 py-2 text-xs font-semibold text-stone-300 transition hover:border-red-500/40 hover:text-red-300"
+          >
+            <LogOut size={14} />
+            {!collapsed && "Log out"}
+          </button>
+        </SignOutButton>
       </div>
     </motion.aside>
   );
