@@ -58,7 +58,7 @@ function CourseCard({ course }) {
           )}
           <div className="flex items-center gap-2">
             <span className="text-lg font-bold text-gray-900">
-              {course.price === 0 ? "Free" : `$${course.price}`}
+              {course.price === 0 ? "Free" : `₦${course.price}`}
             </span>
             <ArrowRight className="w-4 h-4 text-amber-500 group-hover:translate-x-0.5 transition-transform duration-200" />
           </div>

@@ -32,24 +32,40 @@ export async function createBunnyVideo(title) {
 import { BUNNY_API_KEY, BUNNY_LIBRARY_ID } from "@/lib/bunny";
 
 export async function createBunnyVideo(title) {
-  const response = await fetch(
-    `https://video.bunnycdn.com/library/${BUNNY_LIBRARY_ID}/videos`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        AccessKey: BUNNY_API_KEY,
-      },
-      body: JSON.stringify({ title, isPublic: true }),
-    }
-  );
-
-  // Parse body first — then check status so error messages are available
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data?.Message || `Bunny error ${response.status}`);
+  if (!BUNNY_LIBRARY_ID || !BUNNY_API_KEY) {
+    throw new Error("Bunny library ID or API key is missing from environment variables.");
   }
 
-  return data; // { guid, ... }
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+  try {
+    const response = await fetch(
+      `https://video.bunnycdn.com/library/${BUNNY_LIBRARY_ID}/videos`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          AccessKey: BUNNY_API_KEY,
+        },
+        body: JSON.stringify({ title, isPublic: true }),
+        signal: controller.signal,
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data?.Message || `Bunny error ${response.status}`);
+    }
+
+    return data; // { guid, ... }
+  } catch (error) {
+    if (error?.name === "AbortError") {
+      throw new Error("Bunny request timed out while creating the video slot.");
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeoutId);
+  }
 }

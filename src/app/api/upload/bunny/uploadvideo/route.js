@@ -17,14 +17,24 @@ export async function POST(req) {
       );
     }
 
+    if (!BUNNY_LIBRARY_ID || !BUNNY_API_KEY) {
+      return Response.json(
+        {
+          success: false,
+          message: "Bunny library ID or API key is missing from environment variables.",
+        },
+        { status: 500 }
+      );
+    }
+
     const arrayBuffer = await video.arrayBuffer();
 
     const bunnyResponse = await fetch(
-      `https://video.bunnycdn.com/library/${process.env.BUNNY_LIBRARY_ID}/videos/${videoId}`,
+      `https://video.bunnycdn.com/library/${BUNNY_LIBRARY_ID}/videos/${videoId}`,
       {
         method: "PUT",
         headers: {
-          AccessKey: process.env.BUNNY_API_KEY,
+          AccessKey: BUNNY_API_KEY,
           "Content-Type": "application/octet-stream",
         },
         body: Buffer.from(arrayBuffer),

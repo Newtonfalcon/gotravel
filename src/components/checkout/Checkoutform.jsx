@@ -434,7 +434,7 @@ export default function CheckoutForm({
                       Total today
                     </p>
                     <p className="text-4xl font-bold text-gray-900 leading-none">
-                      {course.price === 0 ? "Free" : `$${course.price}`}
+                      {course.price === 0 ? "Free" : `₦${course.price}`}
                     </p>
                   </div>
                   <div className="flex items-center gap-1.5 text-xs text-gray-400 mb-1">
@@ -504,7 +504,7 @@ export default function CheckoutForm({
                         <CreditCard className="w-4 h-4" />
                         {course.price === 0
                           ? "Enroll for Free"
-                          : `Pay $${course.price} with Flutterwave`}
+                          : `Pay ₦${course.price} with Flutterwave`}
                         <ArrowRight className="w-4 h-4" />
                       </motion.span>
                     )}

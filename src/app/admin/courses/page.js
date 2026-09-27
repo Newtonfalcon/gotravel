@@ -73,7 +73,7 @@ function CourseCard({ course }) {
           <span>
             {!course.price || course.price === 0
               ? "Free"
-              : `$${Number(course.price).toFixed(2)}`}
+              : `₦${Number(course.price).toFixed(2)}`}
           </span>
         </div>
         <div className="flex items-center gap-1.5 text-stone-500 text-xs ml-auto">

@@ -147,7 +147,7 @@ export default async function CourseBuilderPage({ params }) {
                 <span>
                   {!course.price || course.price === 0
                     ? "Free"
-                    : `$${Number(course.price).toFixed(2)}`}
+                    : `₦${Number(course.price).toFixed(2)}`}
                 </span>
               </div>
             </div>

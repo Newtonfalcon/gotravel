@@ -63,7 +63,7 @@ export async function POST(request) {
         const response = await flutterwave.post("/payments", {
             tx_ref: txRef,
             amount: course.price,
-            currency: "USD",
+            currency: "NGN",
             redirect_url: `${process.env.NEXT_PUBLIC_APP_URL}/payment/success`,
             customer: {
                 email: user.email,

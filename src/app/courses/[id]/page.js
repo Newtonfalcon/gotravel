@@ -82,7 +82,7 @@ export default async function CourseDetailPage({ params }) {
 
           <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <span className="text-4xl font-bold text-gray-900">
-              {course.price === 0 ? "Free" : `$${course.price}`}
+              {course.price === 0 ? "Free" : `₦${course.price}`}
             </span>
 
             <div className="flex items-center gap-3 flex-wrap">
@@ -205,7 +205,7 @@ export default async function CourseDetailPage({ params }) {
                 href={`/checkout/${id}`}
                 className="shrink-0 inline-flex items-center gap-2 px-8 py-3.5 bg-amber-500 hover:bg-amber-600 text-black font-bold rounded-xl text-sm transition-colors"
               >
-                Enroll for {course.price === 0 ? "Free" : `$${course.price}`}
+                Enroll for {course.price === 0 ? "Free" : `₦${course.price}`}
               </Link>
             </div>
           )}

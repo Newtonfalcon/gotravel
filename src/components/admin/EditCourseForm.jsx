@@ -16,11 +16,11 @@ const CATEGORIES = [
 
 const PRICE_TIERS = [
   { label: "Free", value: "0" },
-  { label: "$19",  value: "19" },
-  { label: "$49",  value: "49" },
-  { label: "$79",  value: "79" },
-  { label: "$99",  value: "99" },
-  { label: "$149", value: "149" },
+  { label: "₦19",  value: "19" },
+  { label: "₦49",  value: "49" },
+  { label: "₦79",  value: "79" },
+  { label: "₦99",  value: "99" },
+  { label: "₦149", value: "149" },
 ];
 
 function FieldLabel({ children, required }) {
@@ -305,7 +305,7 @@ export default function EditCourseForm({ course, courseId }) {
 
             {useCustomPrice && (
               <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-500 text-sm font-bold pointer-events-none">$</span>
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-500 text-sm font-bold pointer-events-none">₦</span>
                 <input
                   type="number"
                   min="0"
@@ -325,7 +325,7 @@ export default function EditCourseForm({ course, courseId }) {
                 <span className="text-amber-400 font-semibold">
                   {parseFloat(resolvedPrice) === 0
                     ? "nothing — free course"
-                    : `$${parseFloat(resolvedPrice).toFixed(2)}`}
+                    : `₦${parseFloat(resolvedPrice).toFixed(2)}`}
                 </span>
               </p>
             )}

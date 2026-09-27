@@ -96,7 +96,7 @@ export default function AboutPage() {
           <p className="mt-6 text-lg sm:text-xl text-gray-300 leading-relaxed max-w-2xl mx-auto">
             GoTravel was born from a simple truth: too many Nigerians were being
             turned away at visa offices, misled by bad advice, or simply
-            didn't know where to start. We built the guide we wished we had.
+            didn&apos;t know where to start. We built the guide we wished we had.
           </p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <Link
@@ -158,7 +158,7 @@ export default function AboutPage() {
               <p className="mt-4 text-gray-500 leading-relaxed">
                 We create affordable, practical courses taught by Nigerians who
                 have done it — people who understand the hustle, the fears, and
-                the stakes. Our students don't just learn, they travel.
+                the stakes. Our students don&apos;t just learn, they travel.
               </p>
               <div className="mt-8 flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-amber-500 flex items-center justify-center shrink-0">

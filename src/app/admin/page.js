@@ -129,7 +129,7 @@ async function RecentCourses() {
 
               {/* Price */}
               <span className="hidden sm:block text-xs text-stone-400 font-semibold">
-                {!course.price || course.price === 0 ? "Free" : `$${Number(course.price).toFixed(0)}`}
+                {!course.price || course.price === 0 ? "Free" : `₦${Number(course.price).toFixed(0)}`}
               </span>
 
               {/* Lesson count */}

@@ -144,7 +144,7 @@ function TestimonialCard({ testimonial, featured = false }) {
     >
       <Quote className="w-7 h-7 text-amber-400 shrink-0 mb-5" />
       <p className="text-gray-600 leading-relaxed flex-1 text-sm sm:text-base">
-        "{testimonial.content}"
+        {testimonial.content}
       </p>
       <div className="mt-6 pt-5 border-t border-gray-100">
         <StarRating rating={testimonial.rating} />
@@ -187,7 +187,7 @@ export default function TestimonialsPage() {
             <span className="text-amber-500">Real results.</span>
           </h1>
           <p className="mt-6 text-lg text-gray-500 leading-relaxed max-w-2xl mx-auto">
-            These aren't actors or paid reviewers. They're Nigerians from Lagos,
+            These aren&apos;t actors or paid reviewers. They&apos;re Nigerians from Lagos,
             Kano, Abuja and everywhere in between — who took a course and
             changed their lives.
           </p>

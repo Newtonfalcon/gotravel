@@ -79,8 +79,8 @@ const FAQS = [
     a: "Yes. Reach out via WhatsApp or email to book a private session with one of our visa specialists.",
   },
   {
-    q: "I'm having trouble accessing my course — what do I do?",
-    a: "Email gotravelsupport@gmail.com with your purchase details and we'll resolve it within 24 hours.",
+    q: "I&apos;m having trouble accessing my course — what do I do?",
+    a: "Email gotravelsupport@gmail.com with your purchase details and we&apos;ll resolve it within 24 hours.",
   },
 ];
 
@@ -96,7 +96,7 @@ export default function ContactPage() {
             Get in Touch
           </span>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold text-white leading-tight">
-            We're here to help you{" "}
+            We&apos;re here to help you{" "}
             <span className="text-amber-400">travel smarter</span>
           </h1>
           <p className="mt-6 text-lg text-gray-300 leading-relaxed max-w-2xl mx-auto">
@@ -146,11 +146,11 @@ export default function ContactPage() {
                 Send a Message
               </span>
               <h2 className="mt-3 text-2xl sm:text-3xl font-heading font-bold text-gray-900">
-                Tell us what's on your mind
+                Tell us what&apos;s on your mind
               </h2>
               <p className="mt-2 text-sm text-gray-500">
                 Course questions, visa guidance, payment issues — whatever it
-                is, we're listening.
+                is, we&apos;re listening.
               </p>
               <div className="mt-8">
                 <ContactForm />
@@ -259,7 +259,7 @@ export default function ContactPage() {
               Common questions
             </h2>
             <p className="mt-3 text-gray-500 text-sm">
-              Can't find your answer here? Send us a message above.
+              Can&apos;t find your answer here? Send us a message above.
             </p>
           </div>
           <div className="space-y-4">

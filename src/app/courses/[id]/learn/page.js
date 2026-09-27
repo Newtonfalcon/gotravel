@@ -51,11 +51,11 @@ export default async function LearnPage({ params, searchParams }) {
         {/* Same top bar as CoursePlayer */}
         <header className="shrink-0 h-14 flex items-center px-4 bg-gray-900 border-b border-gray-800 z-20">
           <Link
-            href={`/courses/${id}`}
+            href="/dashboard"
             className="flex items-center gap-1.5 text-gray-400 hover:text-white transition-colors text-sm"
           >
             <ChevronLeft className="w-4 h-4" />
-            <span>Back to course</span>
+            <span>Back to dashboard</span>
           </Link>
           <div className="w-px h-5 bg-gray-700 mx-3" />
           <p className="text-white text-sm font-semibold truncate">{course.title}</p>
@@ -85,11 +85,11 @@ export default async function LearnPage({ params, searchParams }) {
             <div className="mt-8 w-full h-px bg-gray-800" />
 
             <Link
-              href={`/courses/${id}`}
+              href="/dashboard"
               className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gray-800 hover:bg-gray-700 border border-gray-700 hover:border-gray-600 text-sm font-medium text-gray-300 hover:text-white transition-all"
             >
               <ChevronLeft className="w-4 h-4" />
-              Back to course page
+              Back to dashboard
             </Link>
           </div>
         </div>

@@ -253,11 +253,7 @@ export default function CoursePlayer({ course, lessons, initialLesson, courseId 
 
 
      const handleBack = () => {
-      if (window.history.length > 1) {
-        router.back();
-      } else {
-        router.push("/dashboard");
-      }
+      router.push("/dashboard");
     };
 
   return (
