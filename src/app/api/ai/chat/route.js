@@ -55,7 +55,18 @@ export async function POST(req) {
 
     if (!geminiRes.ok) {
       const txt = await geminiRes.text();
-      return new Response(JSON.stringify({ error: "Gemini error", message: "The AI service failed to respond. Please try again in a moment.", detail: txt }), { status: 502 });
+      console.error("Gemini API error:", {
+        status: geminiRes.status,
+        model: geminiModel,
+        response: txt,
+      });
+      return new Response(JSON.stringify({
+        error: "Gemini error",
+        message: "The AI service failed to respond. Please try again in a moment.",
+        detail: txt,
+        status: geminiRes.status,
+        model: geminiModel,
+      }), { status: 502 });
     }
 
     let geminiJson;
