@@ -2,6 +2,87 @@ import { requireAuth } from "@/lib/auth";
 import { ODARO_SYSTEM_PROMPT } from "@/lib/ai/systemPrompt";
 import admin, { firestore } from "@/lib/firebaseAdmin";
 
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function fetchGeminiWithRetry({ geminiKey, geminiModel, promptText }) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${geminiKey}`;
+
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          systemInstruction: {
+            parts: [{ text: ODARO_SYSTEM_PROMPT }],
+          },
+          contents: [
+            {
+              role: "user",
+              parts: [{ text: promptText }],
+            },
+          ],
+        }),
+      });
+
+      const rawText = await response.text();
+
+      if (!response.ok) {
+        const isRetryable = [429, 500, 502, 503, 504].includes(response.status);
+
+        if (isRetryable && attempt < 3) {
+          console.warn("Gemini transient error, retrying...", {
+            attempt,
+            status: response.status,
+            model: geminiModel,
+            response: rawText.slice(0, 500),
+          });
+          await sleep(attempt * 1000);
+          continue;
+        }
+
+        return {
+          ok: false,
+          status: response.status,
+          message: rawText,
+        };
+      }
+
+      try {
+        return {
+          ok: true,
+          data: JSON.parse(rawText),
+        };
+      } catch (error) {
+        return {
+          ok: true,
+          data: rawText,
+        };
+      }
+    } catch (error) {
+      if (attempt < 3) {
+        console.warn("Gemini network error, retrying...", {
+          attempt,
+          error: error.message,
+          model: geminiModel,
+        });
+        await sleep(attempt * 1000);
+        continue;
+      }
+
+      throw error;
+    }
+  }
+
+  return {
+    ok: false,
+    status: 502,
+    message: "Gemini request failed after retries.",
+  };
+}
+
 // This API route proxies client messages to Google Gemini (server-side) and
 // persists chats to Firestore with a 2-week expiry. It expects the following
 // env vars: GEMINI_API_KEY, FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, FIREBASE_PRIVATE_KEY
@@ -29,53 +110,30 @@ export async function POST(req) {
     const geminiModel = process.env.GEMINI_MODEL || "gemini-3.8-flash";
     const promptText = messages.map((m) => `${m.role}: ${m.content}`).join("\n");
 
-    let geminiRes;
+    let geminiResult;
     try {
-      geminiRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${geminiKey}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          systemInstruction: {
-            parts: [{ text: ODARO_SYSTEM_PROMPT }],
-          },
-          contents: [
-            {
-              role: "user",
-              parts: [{ text: promptText }],
-            },
-          ],
-        }),
-      });
+      geminiResult = await fetchGeminiWithRetry({ geminiKey, geminiModel, promptText });
     } catch (error) {
       console.error("Gemini request failed:", error);
       return new Response(JSON.stringify({ error: "Gemini request failed", message: "The AI service is temporarily unavailable. Please try again." }), { status: 502 });
     }
 
-    if (!geminiRes.ok) {
-      const txt = await geminiRes.text();
+    if (!geminiResult.ok) {
       console.error("Gemini API error:", {
-        status: geminiRes.status,
+        status: geminiResult.status,
         model: geminiModel,
-        response: txt,
+        response: geminiResult.message,
       });
       return new Response(JSON.stringify({
         error: "Gemini error",
         message: "The AI service failed to respond. Please try again in a moment.",
-        detail: txt,
-        status: geminiRes.status,
+        detail: geminiResult.message,
+        status: geminiResult.status,
         model: geminiModel,
       }), { status: 502 });
     }
 
-    let geminiJson;
-    try {
-      geminiJson = await geminiRes.json();
-    } catch (error) {
-      console.error("Gemini response parsing failed:", error);
-      return new Response(JSON.stringify({ error: "Invalid Gemini response", message: "The AI service returned an invalid response. Please try again." }), { status: 502 });
-    }
+    const geminiJson = geminiResult.data;
 
     const assistantReply = geminiJson?.candidates
       ?.map((candidate) => candidate?.content?.parts?.map((part) => part?.text || "").join("") || "")
