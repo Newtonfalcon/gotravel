@@ -5,7 +5,7 @@ import SearchBar from "@/components/courses/SearchBar";
 import Pagination from "@/components/courses/Pagination";
 import { getCourses } from "@/lib/data";
 import Link from "next/link";
-import { BookOpen, ArrowRight, Search } from "lucide-react";
+import { BookOpen, Search } from "lucide-react";
 
 export const metadata = { title: "Courses" };
 
@@ -60,7 +60,9 @@ function CourseCard({ course }) {
             <span className="text-lg font-bold text-gray-900">
               {course.price === 0 ? "Free" : `₦${course.price}`}
             </span>
-            <ArrowRight className="w-4 h-4 text-amber-500 group-hover:translate-x-0.5 transition-transform duration-200" />
+            <span className="ml-2 inline-flex items-center px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-black font-semibold rounded-md text-sm transition-colors">
+              Enrol
+            </span>
           </div>
         </div>
       </div>

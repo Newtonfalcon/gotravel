@@ -1,5 +1,6 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import { Geist, Geist_Mono } from "next/font/google";
+import ChatWidget from "@/components/ai/ChatWidget";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -126,7 +127,10 @@ export default function RootLayout({ children }) {
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
       <body>
-        <ClerkProvider>{children}</ClerkProvider>
+        <ClerkProvider>
+          {children}
+          <ChatWidget />
+        </ClerkProvider>
       </body>
     </html>
   );

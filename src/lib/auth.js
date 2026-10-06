@@ -49,9 +49,15 @@ export const getUser = cache(async () => {
  * Redirects to /sign-in if not.
  * Returns the user doc on success.
  */
-export async function requireAuth() {
+export async function requireAuth(options = {}) {
+  const { redirectOnFail = true } = options;
   const user = await getUser();
-  if (!user) redirect("/sign-in");
+
+  if (!user) {
+    if (redirectOnFail) redirect("/sign-in");
+    return null;
+  }
+
   return user;
 }
 
@@ -61,9 +67,19 @@ export async function requireAuth() {
  * Redirects to /dashboard if authenticated but not admin.
  * Returns the user doc on success.
  */
-export async function requireAdmin() {
+export async function requireAdmin(options = {}) {
+  const { redirectOnFail = true } = options;
   const user = await getUser();
-  if (!user) redirect("/sign-in");
-  if (user.role !== "admin") redirect("/dashboard");
+
+  if (!user) {
+    if (redirectOnFail) redirect("/sign-in");
+    return null;
+  }
+
+  if (user.role !== "admin") {
+    if (redirectOnFail) redirect("/dashboard");
+    return null;
+  }
+
   return user;
 }

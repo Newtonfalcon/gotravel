@@ -1,7 +1,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { Star, Users, Clock, ArrowRight } from "lucide-react";
+import { Star, Users, Clock } from "lucide-react";
 import { FEATURED_COURSES } from "@/data/siteData";
 
 function CourseCard({ course }) {
@@ -55,10 +55,9 @@ function CourseCard({ course }) {
           </div>
           <Link
             href="/courses"
-            className="text-sm font-semibold text-amber-600 hover:text-amber-700 flex items-center gap-1 transition-colors"
+            className="inline-flex items-center gap-2 px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-black font-semibold rounded-md text-sm transition-colors"
           >
             Enroll
-            <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
       </div>
@@ -94,7 +93,6 @@ export default function FeaturedCourses() {
             className="inline-flex items-center gap-2 px-8 py-3.5 border-2 border-gray-900 text-gray-900 font-semibold rounded-lg hover:bg-gray-900 hover:text-white transition-colors text-sm"
           >
             View All Courses
-            <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
       </div>
