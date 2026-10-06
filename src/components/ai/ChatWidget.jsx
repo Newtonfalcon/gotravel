@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useUser } from "@clerk/nextjs";
-import { Bot, MessageSquareText } from "lucide-react";
+import { Bot } from "lucide-react";
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
@@ -91,9 +91,10 @@ export default function ChatWidget() {
   }, [position.x, position.y]);
 
   async function send() {
-    if (!input.trim()) return;
+    const trimmedInput = input.trim();
+    if (!trimmedInput) return;
 
-    const newMessages = [...messages, { role: "user", content: input.trim() }];
+    const newMessages = [...messages, { role: "user", content: trimmedInput }];
     setMessages(newMessages);
     setInput("");
     setLoading(true);
@@ -154,11 +155,7 @@ export default function ChatWidget() {
           className="flex h-full w-full items-center justify-center rounded-full"
           aria-label={isOpen ? "Close AI chat" : "Open AI chat"}
         >
-          {isOpen ? (
-            <Bot className="h-6 w-6" aria-hidden="true" />
-          ) : (
-            <MessageSquareText className="h-6 w-6" aria-hidden="true" />
-          )}
+          <Bot className="h-6 w-6" aria-hidden="true" />
         </button>
       </div>
 
@@ -214,7 +211,7 @@ export default function ChatWidget() {
                       : "ml-auto bg-amber-300 text-slate-900"
                   }`}
                 >
-                  {message.content}
+                  <div style={{ whiteSpace: "pre-wrap", overflowWrap: "anywhere" }}>{message.content}</div>
                 </div>
               ))
             )}
@@ -231,20 +228,24 @@ export default function ChatWidget() {
               Chat on WhatsApp: +234 705 533 3344
             </a>
             <div className="flex gap-2">
-              <input
+              <textarea
                 value={input}
                 onChange={(event) => setInput(event.target.value)}
                 onKeyDown={(event) => {
-                  if (event.key === "Enter") send();
+                  if (event.key === "Enter" && !event.shiftKey) {
+                    event.preventDefault();
+                    send();
+                  }
                 }}
-                className="flex-1 rounded-full border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-800 outline-none transition focus:border-amber-400 focus:bg-white"
+                rows={1}
+                className="flex-1 resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-800 outline-none transition focus:border-amber-400 focus:bg-white"
                 placeholder="Ask the AI..."
               />
               <button
                 type="button"
                 onClick={send}
                 disabled={loading || !input.trim()}
-                className="rounded-full bg-[#facc15] px-4 py-2 font-semibold text-slate-900 transition enabled:hover:bg-[#fbbf24] disabled:cursor-not-allowed disabled:opacity-50"
+                className="self-end rounded-full bg-[#facc15] px-4 py-2 font-semibold text-slate-900 transition enabled:hover:bg-[#fbbf24] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {loading ? "..." : "Send"}
               </button>
