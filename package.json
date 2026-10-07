@@ -25,7 +25,10 @@
     "react-dropzone": "^15.0.0",
     "react-hook-form": "^7.80.0",
     "svix": "^1.96.0",
-    "zod": "^4.4.3"
+    "zod": "^4.4.3",
+    "react-markdown": "^8.0.7",
+    "remark-gfm": "^3.0.1",
+    "rehype-sanitize": "^5.0.1"
   },
   "optionalDependencies": {
     "firebase-admin": "^11.10.0"

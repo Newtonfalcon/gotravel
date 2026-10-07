@@ -61,7 +61,7 @@ function CourseCard({ course }) {
               {course.price === 0 ? "Free" : `₦${course.price}`}
             </span>
             <span className="ml-2 inline-flex items-center px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-black font-semibold rounded-md text-sm transition-colors">
-              Enrol
+              Click to enroll
             </span>
           </div>
         </div>

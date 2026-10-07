@@ -1,6 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeSanitize from "rehype-sanitize";
 import { useUser } from "@clerk/nextjs";
 import { Bot } from "lucide-react";
 
@@ -14,6 +17,15 @@ export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState({ x: 24, y: 24 });
   const dragState = useRef(null);
+  const loadingIntervalRef = useRef(null);
+  const loadingMessageIdRef = useRef(null);
+
+  const loadingPhrases = [
+    "Thinking...",
+    "Searching GoTravel resources...",
+    "Drafting a helpful reply...",
+    "Formatting the response...",
+  ];
 
   useEffect(() => {
     const x = Math.max(16, window.innerWidth - 92);
@@ -40,6 +52,22 @@ export default function ChatWidget() {
       scrollArea.scrollTop = scrollArea.scrollHeight;
     }
   }, [messages, isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    (async () => {
+      try {
+        const res = await fetch("/api/ai/chat/history");
+        if (!res.ok) return;
+        const json = await res.json();
+        if (Array.isArray(json?.messages) && json.messages.length > 0) {
+          setMessages(json.messages);
+        }
+      } catch (e) {
+        // ignore history load errors
+      }
+    })();
+  }, [isOpen]);
 
   const startDragging = (event) => {
     if (event.button !== undefined && event.button !== 0) return;
@@ -99,6 +127,19 @@ export default function ChatWidget() {
     setInput("");
     setLoading(true);
 
+    // add a temporary assistant loading message and start cycling phrases
+    const uid = `loading-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+    loadingMessageIdRef.current = uid;
+    const placeholder = { role: "assistant", content: loadingPhrases[0], __loading: true, __id: uid };
+    setMessages((cur) => [...cur, placeholder]);
+
+    // cycle loading phrases
+    let idx = 0;
+    loadingIntervalRef.current = setInterval(() => {
+      idx = (idx + 1) % loadingPhrases.length;
+      setMessages((cur) => cur.map((m) => (m.__id === uid ? { ...m, content: loadingPhrases[idx] } : m)));
+    }, 900);
+
     try {
       const res = await fetch("/api/ai/chat", {
         method: "POST",
@@ -114,24 +155,45 @@ export default function ChatWidget() {
         json = null;
       }
 
+      const replaceOrAppend = (text) => {
+        setMessages((current) => {
+          const found = current.some((m) => m.__id === uid);
+          if (found) {
+            return current.map((m) => (m.__id === uid ? { role: "assistant", content: text } : m));
+          }
+          return [...current, { role: "assistant", content: text }];
+        });
+      };
+
       if (json?.reply) {
-        setMessages((current) => [...current, { role: "assistant", content: json.reply }]);
+        replaceOrAppend(json.reply);
       } else if (res.status === 401 || json?.error === "Unauthorized") {
-        setMessages((current) => [...current, { role: "assistant", content: "Please sign in to use the AI assistant." }]);
+        replaceOrAppend("Please sign in to use the AI assistant.");
       } else if (json?.message) {
-        setMessages((current) => [...current, { role: "assistant", content: json.message }]);
+        replaceOrAppend(json.message);
       } else if (json?.error) {
-        setMessages((current) => [...current, { role: "assistant", content: json.error }]);
+        replaceOrAppend(json.error);
       } else if (!res.ok) {
-        setMessages((current) => [...current, { role: "assistant", content: "The AI assistant could not respond right now. Please try again." }]);
+        replaceOrAppend("The AI assistant could not respond right now. Please try again.");
       } else {
-        setMessages((current) => [...current, { role: "assistant", content: "The AI assistant returned an empty response. Please try again." }]);
+        replaceOrAppend("The AI assistant returned an empty response. Please try again.");
       }
     } catch (error) {
       console.error("Chat request failed:", error);
-      setMessages((current) => [...current, { role: "assistant", content: "Something went wrong while sending your message. Please try again in a moment." }]);
+      setMessages((current) => {
+        const found = current.some((m) => m.__id === uid);
+        if (found) {
+          return current.map((m) => (m.__id === uid ? { role: "assistant", content: "Something went wrong while sending your message. Please try again in a moment." } : m));
+        }
+        return [...current, { role: "assistant", content: "Something went wrong while sending your message. Please try again in a moment." }];
+      });
     } finally {
       setLoading(false);
+      if (loadingIntervalRef.current) {
+        clearInterval(loadingIntervalRef.current);
+        loadingIntervalRef.current = null;
+      }
+      loadingMessageIdRef.current = null;
     }
   }
 
@@ -211,7 +273,15 @@ export default function ChatWidget() {
                       : "ml-auto bg-amber-300 text-slate-900"
                   }`}
                 >
-                  <div style={{ whiteSpace: "pre-wrap", overflowWrap: "anywhere" }}>{message.content}</div>
+                  <div style={{ whiteSpace: "pre-wrap", overflowWrap: "anywhere" }}>
+                    {message.role === "assistant" ? (
+                      <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSanitize]}>
+                        {String(message.content)}
+                      </ReactMarkdown>
+                    ) : (
+                      <span>{message.content}</span>
+                    )}
+                  </div>
                 </div>
               ))
             )}

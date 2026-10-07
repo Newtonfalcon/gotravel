@@ -118,12 +118,34 @@ export async function POST(req) {
     }
 
     const groqModel = process.env.GROQ_MODEL || "qwen/qwen3.8-27b";
+    // include recent saved user chats as memory to improve context
+    let recentMemory = [];
+    try {
+      const db = firestore();
+      const snaps = await db
+        .collection("ai_chats")
+        .where("userId", "==", user.clerkId)
+        .orderBy("createdAt", "desc")
+        .limit(10)
+        .get();
+
+      snaps.forEach((doc) => {
+        const data = doc.data();
+        if (Array.isArray(data.messages)) {
+          recentMemory.push(...data.messages.slice(-6));
+        } else if (data.assistantReply) {
+          recentMemory.push({ role: "assistant", content: data.assistantReply });
+        }
+      });
+    } catch (e) {
+      // ignore memory load errors
+    }
+
     const groqMessages = [
       { role: "system", content: ODARO_SYSTEM_PROMPT },
-      ...messages.map((message) => ({
-        role: message.role === "assistant" ? "assistant" : "user",
-        content: normalizeMessageContent(message.content),
-      })),
+      // append memory as user/assistant exchanges
+      ...recentMemory.map((m) => ({ role: m.role === "assistant" ? "assistant" : "user", content: normalizeMessageContent(m.content) })),
+      ...messages.map((message) => ({ role: message.role === "assistant" ? "assistant" : "user", content: normalizeMessageContent(message.content) })),
     ];
 
     let groqResult;
