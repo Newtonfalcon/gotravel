@@ -35,6 +35,7 @@ export const adminNavSections = [
     label: "Content",
     items: [
       { label: "Courses", href: "/admin/courses", icon: BookOpen },
+      { label: "Thumbnails", href: "/admin/thumbnails", icon: FileText },
       { label: "Lessons", href: "/admin/lessons", icon: FileText },
       { label: "Categories", href: "/admin/categories", icon: Tag },
       { label: "Blog", href: "/admin/blog", icon: Newspaper },
