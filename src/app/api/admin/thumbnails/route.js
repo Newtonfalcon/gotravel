@@ -17,7 +17,9 @@ export async function GET(req) {
       .sort({ createdAt: -1 })
       .toArray();
 
-    return new Response(JSON.stringify({ success: true, thumbnails: docs }), { status: 200 });
+    // serialize ObjectId to string for the client
+    const serialized = docs.map((d) => ({ ...d, _id: d._id?.toString ? d._id.toString() : d._id }));
+    return new Response(JSON.stringify({ success: true, thumbnails: serialized }), { status: 200 });
   } catch (err) {
     console.error("Thumbnails GET error:", err);
     return new Response(JSON.stringify({ success: false, error: err.message }), { status: 500 });
