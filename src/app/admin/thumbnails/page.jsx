@@ -56,27 +56,27 @@ export default function AdminThumbnailsPage() {
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
-      <h1 className="text-3xl font-semibold mb-6 text-slate-900">Thumbnails</h1>
+      <h1 className="text-3xl font-semibold mb-6 text-white">Thumbnails</h1>
 
       <form onSubmit={upload} className="mb-6 grid grid-cols-1 md:grid-cols-4 gap-3 items-center">
-        <input placeholder="Name (required)" value={name} onChange={(e) => setName(e.target.value)} required className="px-3 py-2 border rounded text-slate-900" />
-        <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files?.[0] || null)} className="px-3 py-2 border rounded text-slate-900" />
-        <input placeholder="Or image URL" value={url} onChange={(e) => setUrl(e.target.value)} className="px-3 py-2 border rounded text-slate-900" />
+        <input placeholder="Name (required)" value={name} onChange={(e) => setName(e.target.value)} required className="px-3 py-2 border rounded bg-stone-800 text-white placeholder:text-stone-400" />
+        <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files?.[0] || null)} className="px-3 py-2 border rounded bg-stone-800 text-white" />
+        <input placeholder="Or image URL" value={url} onChange={(e) => setUrl(e.target.value)} className="px-3 py-2 border rounded bg-stone-800 text-white placeholder:text-stone-400" />
         <div className="flex gap-2">
           <button disabled={loading} className="px-4 py-2 bg-amber-400 text-slate-900 rounded font-medium">{loading ? "Uploading..." : "Upload"}</button>
-          <button type="button" onClick={() => { setName(""); setFile(null); setUrl(""); }} className="px-4 py-2 border rounded text-slate-700">Clear</button>
+          <button type="button" onClick={() => { setName(""); setFile(null); setUrl(""); }} className="px-4 py-2 border rounded text-white">Clear</button>
         </div>
       </form>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {list.map((t) => (
-          <div key={t._id} className="border rounded-lg overflow-hidden bg-white shadow-sm">
-            <div className="w-full h-44 bg-slate-100 flex items-center justify-center overflow-hidden">
+          <div key={t._id} className="border rounded-lg overflow-hidden bg-stone-800 shadow-sm">
+            <div className="w-full h-44 bg-stone-700 flex items-center justify-center overflow-hidden">
               <img src={t.thumb || t.display_url || t.url} alt={t.name || "thumbnail"} className="w-full h-full object-cover" />
             </div>
             <div className="p-4">
-              <div className="text-sm font-semibold text-slate-900 truncate">{t.name}</div>
-              <div className="text-xs text-slate-500 line-clamp-2 mt-1 break-all">{t.url}</div>
+              <div className="text-sm font-semibold text-white truncate">{t.name}</div>
+              <div className="text-xs text-stone-300 line-clamp-2 mt-1 break-all">{t.url}</div>
               <div className="mt-3 flex items-center gap-2">
                 <button
                   onClick={async () => {
@@ -88,12 +88,12 @@ export default function AdminThumbnailsPage() {
                       alert('Copy failed');
                     }
                   }}
-                  className="px-2 py-1 border rounded text-xs text-slate-800"
+                  className="px-2 py-1 border rounded text-xs text-white"
                 >
                   {copiedId === t._id ? 'Copied' : 'Copy URL'}
                 </button>
 
-                <button onClick={() => remove(t._id, t.imgbbId)} className="px-2 py-1 border rounded text-xs text-red-600">Delete</button>
+                <button onClick={() => remove(t._id, t.imgbbId)} className="px-2 py-1 border rounded text-xs text-red-400">Delete</button>
               </div>
             </div>
           </div>

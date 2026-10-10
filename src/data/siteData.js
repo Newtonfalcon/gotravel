@@ -1,6 +1,7 @@
 
 export const NAV_LINKS = [
   { label: "Home", path: "/" },
+  { label: "Blogs", path: "/blogs" },
   { label: "Courses", path: "/courses" },
   { label: "About", path: "/about" },
   { label: "Testimonials", path: "/testimonials" },

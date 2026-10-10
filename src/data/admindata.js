@@ -21,15 +21,11 @@ import {
 export const adminNavSections = [
   {
     label: "Overview",
-    items: [
-      { label: "Dashboard", href: "/admin", icon: LayoutDashboard, exact: true },
-    ],
+    items: [{ label: "Dashboard", href: "/admin", icon: LayoutDashboard, exact: true }],
   },
   {
     label: "People",
-    items: [
-      { label: "Users", href: "/admin/users", icon: Users },
-    ],
+    items: [{ label: "Users", href: "/admin/users", icon: Users }],
   },
   {
     label: "Content",
@@ -38,7 +34,7 @@ export const adminNavSections = [
       { label: "Thumbnails", href: "/admin/thumbnails", icon: FileText },
       { label: "Lessons", href: "/admin/lessons", icon: FileText },
       { label: "Categories", href: "/admin/categories", icon: Tag },
-      { label: "Blog", href: "/admin/blog", icon: Newspaper },
+      { label: "Blogs", href: "/admin/blogs", icon: Newspaper },
     ],
   },
   {
