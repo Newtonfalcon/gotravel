@@ -18,7 +18,7 @@ export default function AdminCreateBlog() {
       if (imageFile) {
         const form = new FormData();
         form.append("image", imageFile);
-        const upl = await fetch("/api/admin/blogs/upload-image", { method: "POST", body: form });
+        const upl = await fetch("/api/admin/blogs/upload-image", { method: "POST", body: form, credentials: 'include' });
         const j = await upl.json();
         if (!upl.ok) throw new Error(j?.message || "Upload failed");
         imageUrl = j.url;
@@ -26,10 +26,15 @@ export default function AdminCreateBlog() {
 
       const res = await fetch("/api/admin/blogs", {
         method: "POST",
+        credentials: 'include',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title, body, image: imageUrl }),
       });
       const json = await res.json();
+      if (res.status === 401) {
+        alert('Unauthorized — please sign in as an admin.');
+        return;
+      }
       if (!res.ok) throw new Error(json?.message || "Create failed");
       router.push("/admin/blogs");
     } catch (err) {

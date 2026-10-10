@@ -1,31 +1,26 @@
 import { NextResponse } from "next/server";
 import admin from "../../../../lib/firebaseAdmin";
-
-// Simple admin guard placeholder. Replace with requireAdmin integration.
-async function requireAdmin(req) {
-  // If you have Clerk or other auth, validate here. For now allow if ENV set.
-  if (!process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
-    return false;
-  }
-  return true;
-}
+import { requireAdmin } from "@/lib/auth";
 
 export async function POST(req) {
-  if (!(await requireAdmin(req))) return NextResponse.json({ message: "unauthorized" }, { status: 401 });
+  const user = await requireAdmin({ redirectOnFail: false });
+  if (!user) return NextResponse.json({ message: "unauthorized" }, { status: 401 });
+
   const body = await req.json();
   const { title, body: content, image } = body;
   if (!title || !content) return NextResponse.json({ message: "missing" }, { status: 400 });
 
   try {
     const db = admin.firestore();
-    const doc = await db.collection("blogs").add({
+    const docRef = await db.collection("blogs").add({
       title,
       body: content,
       image: image || null,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
       likes: 0,
+      author: { clerkId: user.clerkId, name: user.name || null },
     });
-    return NextResponse.json({ id: doc.id, ok: true });
+    return NextResponse.json({ id: docRef.id, ok: true });
   } catch (err) {
     return NextResponse.json({ message: err.message || String(err) }, { status: 500 });
   }
