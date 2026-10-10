@@ -1,10 +1,12 @@
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminBlogsPage() {
   // Fetch list server-side
   let items = [];
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || ""}/api/admin/blogs`, { cache: "no-store" });
+    const res = await fetch(`/api/admin/blogs`, { cache: "no-store" });
     if (res.ok) {
       const j = await res.json();
       items = j.items || [];
