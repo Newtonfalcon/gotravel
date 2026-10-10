@@ -13,9 +13,9 @@ export default async function BlogPost({ params }) {
   return (
     <div className="p-6 max-w-3xl mx-auto">
       <Link href="/blogs" className="text-sm text-amber-400 mb-4 inline-block">← Back to blogs</Link>
-      <h1 className="text-3xl font-bold mb-2">{post.title}</h1>
+      <h1 className="text-3xl font-bold mb-2 text-white">{post.title}</h1>
       {post.image && <img src={post.image} alt={post.title} className="w-full rounded mb-4" />}
-      <div className="prose max-w-none">
+      <div className="prose max-w-none prose-invert">
         <ReactMarkdown>{post.body || ""}</ReactMarkdown>
       </div>
 
