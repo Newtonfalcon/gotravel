@@ -1,35 +1,47 @@
+// src/app/api/blogs/[id]/comments/route.js
 import { NextResponse } from "next/server";
-import { requireAuth } from "@/lib/auth";
-import admin from "../../../../../lib/firebaseAdmin";
+import { addComment, getPost, listComments } from "@/lib/blog/store";
+import { getCommenter, getViewer, isAdminUser } from "@/lib/blog/viewer";
+import { badRequest, errorResponse, readJson, tooManyRequests } from "@/lib/blog/http";
+import { commentSchema, firstIssue } from "@/lib/blog/validation";
+import { rateLimit } from "@/lib/blog/rateLimit";
 
-export async function GET(req, { params }) {
-  const { id } = params;
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
+export async function GET(_request, { params }) {
+  const { id } = await params;
   try {
-    const db = admin.firestore();
-    const snap = await db.collection("blogs").doc(id).collection("comments").orderBy("createdAt", "asc").get();
-    const items = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    if (!(await getPost(id))) {
+      return NextResponse.json({ message: "Post not found." }, { status: 404 });
+    }
+    const viewer = await getViewer();
+    const isAdmin = await isAdminUser(viewer.userId);
+    const items = await listComments(id, { userId: viewer.userId, isAdmin });
     return NextResponse.json({ items });
-  } catch (err) {
-    return NextResponse.json({ message: err.message || String(err) }, { status: 500 });
+  } catch (error) {
+    return errorResponse(error, "blog:comments:list");
   }
 }
 
-export async function POST(req, { params }) {
-  const user = await requireAuth({ redirectOnFail: false });
-  if (!user) return NextResponse.json({ message: "unauthenticated" }, { status: 401 });
-  const { id } = params;
-  const body = await req.json();
-  const { text } = body;
-  if (!text) return NextResponse.json({ message: "missing" }, { status: 400 });
+/** Commenting requires a signed-in user. */
+export async function POST(request, { params }) {
+  const { id } = await params;
   try {
-    const db = admin.firestore();
-    const doc = await db.collection("blogs").doc(id).collection("comments").add({
-      text,
-      user: { clerkId: user.clerkId, name: user.name || null },
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
-    });
-    return NextResponse.json({ id: doc.id, ok: true });
-  } catch (err) {
-    return NextResponse.json({ message: err.message || String(err) }, { status: 500 });
+    const commenter = await getCommenter();
+    if (!commenter) {
+      return NextResponse.json({ message: "Sign in to leave a comment." }, { status: 401 });
+    }
+
+    const limit = rateLimit(`comment:${commenter.userId}`, { limit: 5, windowMs: 60_000 });
+    if (!limit.ok) return tooManyRequests(limit.retryAfter);
+
+    const parsed = commentSchema.safeParse(await readJson(request));
+    if (!parsed.success) return badRequest(firstIssue(parsed.error));
+
+    const comment = await addComment(id, parsed.data.text, commenter);
+    return NextResponse.json({ ok: true, id: comment.id, comment }, { status: 201 });
+  } catch (error) {
+    return errorResponse(error, "blog:comments:create");
   }
 }

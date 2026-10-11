@@ -1,27 +1,35 @@
+// src/app/api/admin/blogs/upload-image/route.js
 import { NextResponse } from "next/server";
-import admin from "../../../../../lib/firebaseAdmin";
-import fetch from "node-fetch";
+import { requireAdmin } from "@/lib/auth";
+import { uploadToImgbb, validateImage } from "@/lib/imgbb";
+import { errorResponse, badRequest, tooManyRequests } from "@/lib/blog/http";
+import { rateLimit } from "@/lib/blog/rateLimit";
 
+export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-export async function POST(req) {
-  // allow admins only — implement real check in requireAdmin
-  if (!process.env.IMGBB_API_KEY) return NextResponse.json({ message: "missing imgbb key" }, { status: 500 });
-  const form = await req.formData();
-  const file = form.get("image");
-  if (!file) return NextResponse.json({ message: "no file" }, { status: 400 });
+/** Admin-only: uploads one image to imgbb and returns its public URL. */
+export async function POST(request) {
+  try {
+    const admin = await requireAdmin({ redirectOnFail: false });
+    if (!admin) return NextResponse.json({ message: "Unauthorized." }, { status: 401 });
 
-  const arrayBuffer = await file.arrayBuffer();
-  const base64 = Buffer.from(arrayBuffer).toString("base64");
+    const limit = rateLimit(`upload:${admin.clerkId}`, { limit: 20, windowMs: 60_000 });
+    if (!limit.ok) return tooManyRequests(limit.retryAfter);
 
-  const res = await fetch(`https://api.imgbb.com/1/upload?key=${process.env.IMGBB_API_KEY}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams({ image: base64 }),
-  });
-  const j = await res.json();
-  if (!res.ok) return NextResponse.json({ message: j?.error?.message || "imgbb error" }, { status: 500 });
+    let form;
+    try {
+      form = await request.formData();
+    } catch {
+      return badRequest("Upload the image as multipart form data.");
+    }
 
-  const url = j.data?.url;
-  return NextResponse.json({ url, raw: j });
+    const file = form.get("image");
+    validateImage(file);
+
+    const image = await uploadToImgbb(file);
+    return NextResponse.json({ ok: true, ...image });
+  } catch (error) {
+    return errorResponse(error, "blog:admin:upload");
+  }
 }

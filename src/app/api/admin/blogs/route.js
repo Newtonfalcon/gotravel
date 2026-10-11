@@ -1,38 +1,41 @@
+// src/app/api/admin/blogs/route.js
 import { NextResponse } from "next/server";
-import admin from "../../../../lib/firebaseAdmin";
 import { requireAdmin } from "@/lib/auth";
+import { createPost, listPosts } from "@/lib/blog/store";
+import { badRequest, errorResponse, readJson } from "@/lib/blog/http";
+import { createPostSchema, firstIssue } from "@/lib/blog/validation";
 
-export async function POST(req) {
-  const user = await requireAdmin({ redirectOnFail: false });
-  if (!user) return NextResponse.json({ message: "unauthorized" }, { status: 401 });
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
-  const body = await req.json();
-  const { title, body: content, image } = body;
-  if (!title || !content) return NextResponse.json({ message: "missing" }, { status: 400 });
+const unauthorized = () => NextResponse.json({ message: "Unauthorized." }, { status: 401 });
 
+/** All posts including drafts. */
+export async function GET() {
   try {
-    const db = admin.firestore();
-    const docRef = await db.collection("blogs").add({
-      title,
-      body: content,
-      image: image || null,
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      likes: 0,
-      author: { clerkId: user.clerkId, name: user.name || null },
-    });
-    return NextResponse.json({ id: docRef.id, ok: true });
-  } catch (err) {
-    return NextResponse.json({ message: err.message || String(err) }, { status: 500 });
+    const admin = await requireAdmin({ redirectOnFail: false });
+    if (!admin) return unauthorized();
+    return NextResponse.json({ items: await listPosts({ scope: "admin" }) });
+  } catch (error) {
+    return errorResponse(error, "blog:admin:list");
   }
 }
 
-export async function GET() {
+export async function POST(request) {
   try {
-    const db = admin.firestore();
-    const snap = await db.collection("blogs").orderBy("createdAt", "desc").limit(50).get();
-    const items = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-    return NextResponse.json({ items });
-  } catch (err) {
-    return NextResponse.json({ message: err.message || String(err) }, { status: 500 });
+    const admin = await requireAdmin({ redirectOnFail: false });
+    if (!admin) return unauthorized();
+
+    const parsed = createPostSchema.safeParse(await readJson(request));
+    if (!parsed.success) return badRequest(firstIssue(parsed.error));
+
+    const id = await createPost(parsed.data, {
+      clerkId: admin.clerkId,
+      name: admin.name,
+      image: admin.image,
+    });
+    return NextResponse.json({ ok: true, id }, { status: 201 });
+  } catch (error) {
+    return errorResponse(error, "blog:admin:create");
   }
 }

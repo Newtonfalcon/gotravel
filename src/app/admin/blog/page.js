@@ -1,14 +1,7 @@
-import UnderDevelopmentPage from "@/components/admin/UnderDevelopmentPage";
+// src/app/admin/blog/page.js
+import { redirect } from "next/navigation";
 
-export const metadata = {
-  title: "Blog — Admin",
-};
-
-export default function BlogPage() {
-  return (
-    <UnderDevelopmentPage
-      title="Blog"
-      description="The blog publishing dashboard is still under construction. Content publishing tools will be added here next."
-    />
-  );
+// The blog dashboard lives at /admin/blogs. Keep old links working.
+export default function LegacyAdminBlogPage() {
+  redirect("/admin/blogs");
 }
