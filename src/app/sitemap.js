@@ -4,7 +4,7 @@ import { listPosts } from "@/lib/blog/store";
 // Always generated on request so newly published posts appear immediately.
 export const dynamic = "force-dynamic";
 
-const siteUrl = (process.env.NEXT_PUBLIC_APP_URL || "https://gotravel-alpha.vercel.app").replace(/\/$/, "");
+const siteUrl = (process.env.NEXT_PUBLIC_APP_URL || "https://gotravelsltd.com").replace(/\/$/, "");
 
 const STATIC_PAGES = [
   { path: "", changeFrequency: "weekly", priority: 1 },
