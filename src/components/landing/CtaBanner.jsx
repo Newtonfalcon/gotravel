@@ -24,7 +24,7 @@ export default function CtaBanner() {
             <ArrowRight className="w-5 h-5" />
           </Link>
           <a
-            href="https://wa.me/2349038162915"
+            href="https://wa.me/2347055333334"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-8 py-4 border border-gray-700 text-gray-300 hover:border-green-500 hover:text-green-400 font-medium rounded-lg transition-colors text-sm sm:text-base w-full sm:w-auto justify-center"

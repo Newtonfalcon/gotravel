@@ -21,16 +21,16 @@ const OFFICES = [
   {
     flag: "🇺🇸",
     label: "USA Office",
-    address: "17504 Preston Road\nDallas, Texas, USA",
-    phone: "+1 (214) 469-9062",
-    href: "tel:+12144699062",
+    address: "910A sagebrush dr Austin Texas 78660",
+    phone: "+12144699012",
+    href: "tel:+12144699012",
   },
   {
     flag: "🇳🇬",
     label: "Nigeria Office",
     address: "2 Omorogbe Street\nOff Ihama Road, GRA\nBenin City, Edo State",
-    phone: "+234 705 533 3344",
-    href: "tel:+2347055333344",
+    phone: "07055333332",
+    href: "tel:07055333332",
   },
 ];
 
@@ -46,21 +46,21 @@ const CONTACT_METHODS = [
     icon: MessageCircle,
     label: "WhatsApp",
     value: "Chat with us",
-    href: "https://wa.me/2347055333344",
+    href: "https://wa.me/2347055333334",
     description: "Fastest way to reach us. Usually reply in minutes.",
   },
   {
     icon: Phone,
     label: "Call USA",
-    value: "+1 (214) 469-9062",
-    href: "tel:+12144699062",
+    value: "+12144699012",
+    href: "tel:+12144699012",
     description: "Mon–Fri, 9am–6pm CST",
   },
   {
     icon: Phone,
     label: "Call Nigeria",
-    value: "+234 705 533 3344",
-    href: "tel:+2347055333344",
+    value: "07055333332",
+    href: "tel:07055333332",
     description: "Mon–Fri, 9am–6pm WAT",
   },
 ];

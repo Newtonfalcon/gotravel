@@ -289,13 +289,13 @@ export default function ChatWidget() {
 
           <div className="border-t border-slate-200 bg-white p-3">
             <a
-              href="https://wa.me/2347055333344"
+              href="https://wa.me/23470553334"
               target="_blank"
               rel="noopener noreferrer"
               className="mb-3 flex items-center justify-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-medium text-emerald-700 transition hover:bg-emerald-100"
             >
               <span aria-hidden="true">💬</span>
-              Chat on WhatsApp: +234 705 533 3344
+              Chat on WhatsApp: 07055333334
             </a>
             <div className="flex gap-2">
               <textarea

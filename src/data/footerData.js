@@ -13,7 +13,7 @@ export const FOOTER_LINKS = {
   support: [
     { label: "Help Center", path: "/contact" },
     { label: "FAQs", path: "/contact" },
-    { label: "WhatsApp Us", path: "https://wa.me/2349038162915" },
+    { label: "WhatsApp Us", path: "https://wa.me/2347055333334" },
   ],
   legal: [
     { label: "Privacy Policy", path: "/about" },
@@ -47,6 +47,6 @@ export const SOCIAL_LINKS = [
 
 export const CONTACT_INFO = {
   email: "gotravelsupport@gmail.com",
-  phone: "+234 705 533 3344",
-  address: "2 Omorogbe Street, Off Ihama Road, GRA, Benin City, Edo State",
+  phone: "07055333332",
+  address: "910A sagebrush dr Austin Texas 78660",
 };

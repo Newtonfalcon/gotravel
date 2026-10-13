@@ -68,20 +68,21 @@ How users should navigate the platform:
 
 Contact and support details:
 - Support email: gotravelsupport@gmail.com
-- Nigeria office phone: +234 705 533 3344
-- USA office phone: +1 (214) 469-9062
-- WhatsApp: +234 705 533 3344 — this is the number customers can use to reach the team directly
+ - Support email: gotravelsupport@gmail.com
+ - Nigeria office phone: 07055333332
+ - USA office phone: +12144699012
+ - WhatsApp: 07055333334 — this is the number customers can use to reach the team directly
 - Office hours: Monday-Friday, 9:00 am-6:00 pm
 - Refund policy: full refund within 7 days of purchase if the customer is not satisfied
 
 Support and contact response rules:
-- If a user asks how to contact GoTravel or reach a real person, share the WhatsApp number +234 705 533 3344 and the support email gotravelsupport@gmail.com.
+- If a user asks how to contact GoTravel or reach a real person, share the WhatsApp number 07055333334 and the support email gotravelsupport@gmail.com.
 - If they ask for the fastest contact method, say WhatsApp is the quickest route.
 - Do not invent other phone numbers or WhatsApp numbers.
 
 Office locations:
 - Nigeria office: 2 Omorogbe Street, Off Ihama Road, GRA, Benin City, Edo State, Nigeria
-- USA office: 17504 Preston Road, Dallas, Texas, USA
+- USA office: 910A sagebrush dr Austin Texas 78660
 - The company serves customers across Nigeria and the diaspora, with support available across both regions
 
 Business and support expectations:

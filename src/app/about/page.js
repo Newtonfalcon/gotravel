@@ -325,7 +325,7 @@ export default function AboutPage() {
               {
                 flag: "🇺🇸",
                 country: "USA Office",
-                address: "17504 Preston Road\nDallas, Texas, USA",
+                address: "910A sagebrush dr Austin Texas 78660",
               },
               {
                 flag: "🇳🇬",
