@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 const siteUrl =
   process.env.NEXT_PUBLIC_APP_URL ||
-  "https://gotravel-alpha.vercel.app";
+  "https://gotravelsltd";
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
@@ -52,9 +52,9 @@ export const metadata = {
   publisher: "GoTravel",
   category: "Travel",
 
-  alternates: {
+  /*alternates: {
     canonical: siteUrl,
-  },
+  },*/
 
   icons: {
     icon: [
